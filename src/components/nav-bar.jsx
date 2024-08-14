@@ -1,34 +1,10 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   Box, Flex, Button, HStack,
 } from '@chakra-ui/react';
-import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
 import { SignInButton } from '@clerk/clerk-react';
-import useAuthenticated from '../hooks/auth-hooks';
-import { signoutUser } from '../actions';
 
 function NavBar({ onOpen, setAccountStatus }) {
-  const authenticated = useAuthenticated();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  // button functions
-  const handleLogOut = useCallback(() => {
-    dispatch(signoutUser(navigate));
-    navigate('/');
-  }, [dispatch, navigate]);
-
-  const handleSignUp = useCallback(() => {
-    setAccountStatus(false);
-    onOpen();
-  }, [onOpen, setAccountStatus]);
-
-  // const handleLogIn = useCallback(() => {
-  //   setAccountStatus(true);
-  //   onOpen();
-  // }, [onOpen, setAccountStatus]);
-
   // if signed in, render a different menu
   function renderMenu() {
     if (authenticated) {
@@ -43,9 +19,6 @@ function NavBar({ onOpen, setAccountStatus }) {
       return (
         <HStack>
           <SignInButton />
-          <Button onClick={handleSignUp}>
-            Sign Up
-          </Button>
         </HStack>
       );
     }
