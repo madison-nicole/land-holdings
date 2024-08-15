@@ -1,27 +1,50 @@
 import React from 'react';
 import {
-  Box, Flex, Button, HStack,
+  Box, Flex, HStack,
 } from '@chakra-ui/react';
-import { SignInButton } from '@clerk/clerk-react';
+import {
+  SignedIn, SignedOut, SignUpButton, SignOutButton,
+} from '@clerk/clerk-react';
 
-function NavBar({ onOpen, setAccountStatus }) {
+function NavBar() {
   // if signed in, render a different menu
   function renderMenu() {
-    if (authenticated) {
-      return (
-        <HStack>
-          <Button onClick={handleLogOut}>
-            Log Out
-          </Button>
-        </HStack>
-      );
-    } else {
-      return (
-        <HStack>
-          <SignInButton />
-        </HStack>
-      );
-    }
+    return (
+      <HStack>
+        <SignedIn>
+          <SignOutButton
+            appearance={{
+              elements: {
+                formButtonPrimary: {
+                  fontSize: 14,
+                  textTransform: 'none',
+                  backgroundColor: '#06253f',
+                  '&:hover, &:focus, &:active': {
+                    backgroundColor: '#bee3f8',
+                  },
+                },
+              },
+            }}
+          />
+        </SignedIn>
+        <SignedOut>
+          <SignUpButton
+            appearance={{
+              elements: {
+                formButtonPrimary: {
+                  fontSize: 14,
+                  textTransform: 'none',
+                  backgroundColor: '#06253f',
+                  '&:hover, &:focus, &:active': {
+                    backgroundColor: '#bee3f8',
+                  },
+                },
+              },
+            }}
+          />
+        </SignedOut>
+      </HStack>
+    );
   }
 
   return (

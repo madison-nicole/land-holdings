@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
-import { useDisclosure } from '@chakra-ui/react';
+import React from 'react';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import NavBar from './nav-bar';
-import AuthModal from './auth-modal';
+import Info from './info';
+import Welcome from './welcome';
+import Footer from './footer';
 
 function Home() {
-  const [accountStatus, setAccountStatus] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <div>
-      <NavBar setAccountStatus={setAccountStatus} onOpen={onOpen} />
-      <AuthModal accountStatus={accountStatus} isOpen={isOpen} onClose={onClose} />
+      <NavBar />
+      <SignedIn>
+        <Info />
+      </SignedIn>
+      <SignedOut>
+        <Welcome />
+      </SignedOut>
+      <Footer />
     </div>
   );
 }
