@@ -1,14 +1,40 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
-  Tabs, TabList, TabPanel, TabPanels, Tab,
+  Tabs, TabList, TabPanel, TabPanels,
+  Tab, Flex, Button,
+  useDisclosure,
 } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import Owners from './owners';
 import LandHoldings from './land-holdings';
 import JumpToTop from './jump-to-top';
+import ListingCard from './listing-card';
 
 function Info() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // const onSelectGame = useCallback((game, coverUrl, year, avgRating) => {
+  //   dispatch(selectGame(game, coverUrl, year, avgRating));
+  // }, [dispatch]);
+
+  const openListingCard = useCallback(() => {
+    onOpen();
+  }, [onOpen]);
+
   return (
-    <>
+    <Flex alignItems="center" direction="column">
+      <div>
+        <Button
+          colorScheme="blue"
+          mb="20px"
+          mt="50px"
+          rightIcon={<AddIcon />}
+          variant="outline"
+          onClick={openListingCard}
+        >ADD
+        </Button>
+      </div>
+      <ListingCard isOpen={isOpen} onClose={onClose} />
       <Tabs colorScheme="blue" variant="soft-rounded">
         <TabList display="flex" justifyContent="center" margin={10}>
           <Tab cursor="pointer" fontSize={13.5} fontWeight={700}>Owners</Tab>
@@ -24,7 +50,7 @@ function Info() {
         </TabPanels>
       </Tabs>
       <JumpToTop />
-    </>
+    </Flex>
   );
 }
 
