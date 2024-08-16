@@ -6,49 +6,57 @@ import {
 } from '@chakra-ui/react';
 import OwnerCard from './owner-card';
 import LandHoldingCard from './land-holding-card';
-
-// set up enum for entry types
-const EntryTypes = Object.freeze({
-  Owner: 'OWNER',
-  LandHolding: 'LAND HOLDING',
-});
+import { EntryTypes, emptyLandData, emptyOwnerData } from '../utils/listing-utils';
 
 function ListingCard({ onClose, isOpen }) {
   // Modal setup
   const finalRef = useRef(null);
 
   const [entryType, setEntryType] = useState(EntryTypes.Owner);
-  const [ownerFields, setOwnerFields] = useState({});
-  const [landFields, setLandFields] = useState({});
+  const [ownerData, setOwnerData] = useState(emptyOwnerData);
+  const [landData, setLandData] = useState(emptyLandData);
 
   console.log(entryType);
+
+  //   const handleOwnerInputChange = (e) => {
+  //     const { name, value } = e.target;
+  //     setOwnerData({ ...ownerData, [name]: value });
+  //   };
+
+  //   const handleLandInputChange = (e) => {
+  //     const { name, value } = e.target;
+  //     setLandData({ ...landData, [name]: value });
+  //   };
+
+  //   const handleOwnerSubmit = (e) => {
+  //     e.preventDefault();
+  //     // Your custom submission logic here
+  //   };
 
   const onCloseListing = useCallback(() => {
     // close modal
     onClose();
 
     // clear fields
-    setOwnerFields({});
-    setLandFields({});
+    setOwnerData(emptyOwnerData);
+    setLandData(emptyLandData);
 
     // clear selected
     // dispatch(clearSelectedGame());
-    console.log(ownerFields);
-    console.log(landFields);
-  }, [landFields, onClose, ownerFields]);
+  }, [onClose]);
 
   const switchToLand = useCallback(() => {
     setEntryType(EntryTypes.LandHolding);
 
     // clear owner fields
-    setOwnerFields({});
+    setOwnerData(emptyOwnerData);
   }, [setEntryType]);
 
   const switchToOwner = useCallback(() => {
     setEntryType(EntryTypes.Owner);
 
     // clear land holding fields
-    setLandFields({});
+    setLandData(emptyLandData);
   }, [setEntryType]);
 
   return (
@@ -57,37 +65,43 @@ function ListingCard({ onClose, isOpen }) {
         finalFocusRef={finalRef}
         isCentered
         isOpen={isOpen}
-        scrollBehavior="inside"
         onClose={onCloseListing}
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalBody padding="0px" width="fit-content">
+          <ModalBody padding="0px" width="654px">
             <Card
               alignItems="center"
               display="flex"
               flexDirection="column"
-              height="700px"
-              justifyContent="center"
+              height="780px"
+              justifyContent="flex-start"
             >
               <ModalCloseButton />
               <Flex alignItems="center" direction="column">
-                <Tabs colorScheme="blue" variant="soft-rounded">
+                <Tabs colorScheme="blue" marginTop="30px" variant="soft-rounded">
                   <TabList>
                     <Tab onClick={switchToLand}>OWNER</Tab>
                     <Tab onClick={switchToOwner}>LAND HOLDING</Tab>
                   </TabList>
                   <TabPanels>
                     <TabPanel>
-                      <OwnerCard setFields={setOwnerFields} />
+                      <OwnerCard data={ownerData} setData={setOwnerData} />
                     </TabPanel>
                     <TabPanel>
-                      <LandHoldingCard setFields={setLandFields} />
+                      <LandHoldingCard data={landData} setData={setLandData} />
                     </TabPanel>
                   </TabPanels>
                 </Tabs>
                 <CardFooter>
-                  <Button>SAVE</Button>
+                  <Button
+                    _hover={{ bg: '#a1c1d2' }}
+                    bg="#bee3f8"
+                    color="#06253f"
+                    fontWeight={700}
+                    variant="outline"
+                  >SAVE
+                  </Button>
                 </CardFooter>
               </Flex>
             </Card>

@@ -25,7 +25,10 @@ function Info() {
     <Flex alignItems="center" direction="column">
       <div>
         <Button
-          colorScheme="blue"
+          _hover={{ bg: '#a1c1d2' }}
+          bg="#bee3f8"
+          color="#06253f"
+          fontWeight={700}
           mb="20px"
           mt="50px"
           rightIcon={<AddIcon />}
