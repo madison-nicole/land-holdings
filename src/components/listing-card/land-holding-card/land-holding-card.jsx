@@ -13,7 +13,7 @@ import {
 } from '../../../utils/text-utils';
 import SectionName from './section-name';
 
-function LandHoldingCard({ data, setData }) {
+function LandHoldingCard({ data, setData, setValid }) {
   React.useEffect(() => {
     console.log(data);
   }, [data]);
@@ -27,7 +27,7 @@ function LandHoldingCard({ data, setData }) {
       paddingBottom="0px"
     >
       <VStack>
-        <form>
+        <form className="entry-form">
           <FormControl isRequired>
             <FormLabel>Name</FormLabel>
             <Input type="text" value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })} />

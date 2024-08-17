@@ -58,7 +58,7 @@ function SectionName({ data, setData }) {
             minLength={4}
             type="text"
             value={data.township}
-            width="85px"
+            width="95px"
             onChange={(e) => setData({ ...data, township: (e.target.value).toUpperCase(), sectionName: sectionNameInput })}
           />
           <FormErrorMessage>{townshipError}</FormErrorMessage>
@@ -72,7 +72,7 @@ function SectionName({ data, setData }) {
             minLength={4}
             type="text"
             value={data.range}
-            width="85px"
+            width="95px"
             onChange={(e) => setData({ ...data, range: (e.target.value).toUpperCase(), sectionName: sectionNameInput })}
           />
           <FormErrorMessage>{rangeError}</FormErrorMessage>

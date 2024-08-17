@@ -8,11 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { errorMsg } from '../../../utils/text-utils';
 
-function OwnerCard({ data, setData }) {
-  React.useEffect(() => {
-    console.log(data);
-  }, [data]);
-
+function OwnerCard({ data, setData, setValid }) {
   return (
     <CardBody
       alignItems="center"
@@ -21,8 +17,8 @@ function OwnerCard({ data, setData }) {
       justifyContent="flex-start"
       paddingBottom="0px"
     >
-      <VStack>
-        <form>
+      <VStack width="90%">
+        <form className="entry-form">
           <FormControl isRequired>
             <FormLabel>Owner Name</FormLabel>
             <Input type="text" value={data.ownerName} onChange={(e) => setData({ ...data, ownerName: e.target.value })} />

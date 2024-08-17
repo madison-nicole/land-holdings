@@ -3,61 +3,73 @@ import {
   Modal, ModalOverlay, ModalContent, ModalBody, Card,
   ModalCloseButton, Button, CardFooter, Tabs, TabList,
   TabPanel, Tab, TabPanels, Flex,
+  useToast,
 } from '@chakra-ui/react';
+import { useDispatch } from 'react-redux';
 import OwnerCard from './owner-card/owner-card';
 import LandHoldingCard from './land-holding-card/land-holding-card';
-import { EntryTypes, emptyLandData, emptyOwnerData } from '../../utils/listing-utils';
+import { emptyLandData, emptyOwnerData } from '../../utils/listing-utils';
+import { errorToast, successToast } from '../../utils/toast-utils';
 
 function ListingCard({ onClose, isOpen }) {
-  // Modal setup
   const finalRef = useRef(null);
+  const dispatch = useDispatch();
+  const toast = useToast();
 
-  const [entryType, setEntryType] = useState(EntryTypes.Owner);
   const [ownerData, setOwnerData] = useState(emptyOwnerData);
   const [landData, setLandData] = useState(emptyLandData);
 
-  console.log(entryType);
-
-  //   const handleOwnerInputChange = (e) => {
-  //     const { name, value } = e.target;
-  //     setOwnerData({ ...ownerData, [name]: value });
-  //   };
-
-  //   const handleLandInputChange = (e) => {
-  //     const { name, value } = e.target;
-  //     setLandData({ ...landData, [name]: value });
-  //   };
-
-  //   const handleOwnerSubmit = (e) => {
-  //     e.preventDefault();
-  //     // Your custom submission logic here
-  //   };
+  // Determine if all form requirements are met
+  const [validOwnerForm, setValidOwnerForm] = useState(false);
+  const [validLandForm, setValidLandForm] = useState(false);
 
   const onCloseListing = useCallback(() => {
-    // close modal
+    // Close the modal
     onClose();
 
-    // clear fields
+    // Clear the fields
     setOwnerData(emptyOwnerData);
     setLandData(emptyLandData);
 
-    // clear selected
+    // Clear the selected listing
     // dispatch(clearSelectedGame());
   }, [onClose]);
 
-  const switchToLand = useCallback(() => {
-    setEntryType(EntryTypes.LandHolding);
+  // Save the owner entry
+  const saveOwnerData = useCallback(() => {
+    // Check that all field requirements are met
+    if (validOwnerForm) {
+      // Save the owner listing
+      dispatch(addOwnerListing(ownerData));
 
-    // clear owner fields
-    setOwnerData(emptyOwnerData);
-  }, [setEntryType]);
+      // Close the modal and clear the data
+      onCloseListing();
 
-  const switchToOwner = useCallback(() => {
-    setEntryType(EntryTypes.Owner);
+      // Display success toast
+      toast(successToast);
+    } else {
+      // Display an error toast
+      toast(errorToast);
+    }
+  }, [validOwnerForm, dispatch, ownerData, onCloseListing, toast]);
 
-    // clear land holding fields
-    setLandData(emptyLandData);
-  }, [setEntryType]);
+  // Save the land holding entry
+  const saveLandData = useCallback(() => {
+    // Check that all field requirements are met
+    if (validLandForm) {
+      // Save the owner listing
+      dispatch(addLandListing(landData));
+
+      // Close the modal and clear the data
+      onCloseListing();
+
+      // Display success toast
+      toast(successToast);
+    } else {
+      // Display an error toast
+      toast(errorToast);
+    }
+  }, [validLandForm, dispatch, landData, onCloseListing, toast]);
 
   return (
     <div>
@@ -81,29 +93,46 @@ function ListingCard({ onClose, isOpen }) {
               <ModalCloseButton />
               <Flex alignItems="center" direction="column">
                 <Tabs colorScheme="blue" marginTop="30px" variant="soft-rounded">
-                  <TabList>
-                    <Tab onClick={switchToLand}>OWNER</Tab>
-                    <Tab onClick={switchToOwner}>LAND HOLDING</Tab>
+                  <TabList marginLeft="200px">
+                    <Tab>OWNER</Tab>
+                    <Tab>LAND HOLDING</Tab>
                   </TabList>
                   <TabPanels>
                     <TabPanel>
-                      <OwnerCard data={ownerData} setData={setOwnerData} />
+                      <OwnerCard data={ownerData} setData={setOwnerData} setValid={setValidOwnerForm} />
+                      <CardFooter>
+                        <Button
+                          _hover={{ bg: '#a1c1d2' }}
+                          aria-label="save owner data"
+                          bg="#bee3f8"
+                          color="#06253f"
+                          fontWeight={700}
+                          marginLeft="250px"
+                          marginTop="38.5px"
+                          variant="outline"
+                          onClick={saveOwnerData}
+                        >SAVE
+                        </Button>
+                      </CardFooter>
                     </TabPanel>
                     <TabPanel>
-                      <LandHoldingCard data={landData} setData={setLandData} />
+                      <LandHoldingCard data={landData} setData={setLandData} setValid={setValidLandForm} />
+                      <CardFooter>
+                        <Button
+                          _hover={{ bg: '#a1c1d2' }}
+                          aria-label="save land holding data"
+                          bg="#bee3f8"
+                          color="#06253f"
+                          fontWeight={700}
+                          marginLeft="250px"
+                          variant="outline"
+                          onClick={saveLandData}
+                        >SAVE
+                        </Button>
+                      </CardFooter>
                     </TabPanel>
                   </TabPanels>
                 </Tabs>
-                <CardFooter>
-                  <Button
-                    _hover={{ bg: '#a1c1d2' }}
-                    bg="#bee3f8"
-                    color="#06253f"
-                    fontWeight={700}
-                    variant="outline"
-                  >SAVE
-                  </Button>
-                </CardFooter>
               </Flex>
             </Card>
           </ModalBody>

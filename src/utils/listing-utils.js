@@ -1,9 +1,3 @@
-// set up enum for entry types
-export const EntryTypes = Object.freeze({
-  Owner: 'OWNER',
-  LandHolding: 'LAND HOLDING',
-});
-
 export const emptyOwnerData = {
   ownerName: '',
   entityType: '',
