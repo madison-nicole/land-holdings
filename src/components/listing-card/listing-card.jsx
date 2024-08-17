@@ -4,9 +4,9 @@ import {
   ModalCloseButton, Button, CardFooter, Tabs, TabList,
   TabPanel, Tab, TabPanels, Flex,
 } from '@chakra-ui/react';
-import OwnerCard from './owner-card';
-import LandHoldingCard from './land-holding-card';
-import { EntryTypes, emptyLandData, emptyOwnerData } from '../utils/listing-utils';
+import OwnerCard from './owner-card/owner-card';
+import LandHoldingCard from './land-holding-card/land-holding-card';
+import { EntryTypes, emptyLandData, emptyOwnerData } from '../../utils/listing-utils';
 
 function ListingCard({ onClose, isOpen }) {
   // Modal setup
@@ -72,6 +72,7 @@ function ListingCard({ onClose, isOpen }) {
           <ModalBody padding="0px" width="654px">
             <Card
               alignItems="center"
+              bg="#04192b"
               display="flex"
               flexDirection="column"
               height="780px"

@@ -9,9 +9,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import {
-  errorMsg, sectionNameHelper, sectionHelper,
-  townshipHelper, rangeHelper, nameHelper,
-} from '../utils/text-utils';
+  errorMsg, nameHelper,
+} from '../../../utils/text-utils';
+import SectionName from './section-name';
 
 function LandHoldingCard({ data, setData }) {
   React.useEffect(() => {
@@ -70,34 +70,7 @@ function LandHoldingCard({ data, setData }) {
               <FormErrorMessage>{errorMsg}</FormErrorMessage>
             </FormControl>
           </HStack>
-          <FormControl isRequired>
-            <FormLabel>Section Name</FormLabel>
-            <Input type="text" value={data.sectionName} onChange={(e) => setData({ ...data, sectionName: e.target.value })} />
-            <FormErrorMessage>{errorMsg}</FormErrorMessage>
-            <FormHelperText fontSize={12}>{sectionNameHelper}</FormHelperText>
-          </FormControl>
-          <HStack marginBottom="15px" marginTop="15px">
-            <FormControl isRequired>
-              <FormLabel>Section</FormLabel>
-              <Input maxLength={3} minLength={3} type="text" value={data.section} width="75px" onChange={(e) => setData({ ...data, section: e.target.value })} />
-              <FormErrorMessage>{errorMsg}</FormErrorMessage>
-              <FormHelperText fontSize={10}>{sectionHelper}</FormHelperText>
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Township</FormLabel>
-              <Input maxLength={4} minLength={4} type="text" value={data.township} width="75px" onChange={(e) => setData({ ...data, township: e.target.value })} />
-              <FormErrorMessage>{errorMsg}</FormErrorMessage>
-              <FormHelperText fontSize={10}>{townshipHelper}</FormHelperText>
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Range</FormLabel>
-              <Input maxLength={4} minLength={4} type="text" value={data.range} width="75px" onChange={(e) => setData({ ...data, range: e.target.value })} />
-              <FormErrorMessage>{errorMsg}</FormErrorMessage>
-              <FormHelperText fontSize={10}>{rangeHelper}</FormHelperText>
-            </FormControl>
-            {/* Township ends in N or S
-        Range ends in E or W */}
-          </HStack>
+          <SectionName data={data} setData={setData} />
           <FormControl as="fieldset" isRequired marginTop="20px">
             <FormLabel as="legend">Title Source</FormLabel>
             <RadioGroup defaultValue="ClassA" value={data.titleSource} onChange={(e) => setData({ ...data, titleSource: e })}>

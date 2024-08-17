@@ -30,3 +30,19 @@ export const emptyLandData = {
   range: '',
   titleSource: '',
 };
+
+// returns true if township is invalid
+export function isTownshipInvalid(input) {
+  if (input[3] !== 'N' || input[3] !== 'S') {
+    return true;
+  }
+  return false;
+}
+
+// returns true if range is invalid
+export function isRangeInvalid(input) {
+  if (input[3] !== 'E' || input[3] !== 'W') {
+    return true;
+  }
+  return false;
+}

@@ -8,7 +8,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import Owners from './owners';
 import LandHoldings from './land-holdings';
 import JumpToTop from './jump-to-top';
-import ListingCard from './listing-card';
+import ListingCard from './listing-card/listing-card';
 
 function Info() {
   const { isOpen, onOpen, onClose } = useDisclosure();

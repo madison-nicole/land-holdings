@@ -6,7 +6,7 @@ import {
   NumberInputStepper, NumberDecrementStepper,
   NumberIncrementStepper, NumberInputField,
 } from '@chakra-ui/react';
-import { errorMsg } from '../utils/text-utils';
+import { errorMsg } from '../../../utils/text-utils';
 
 function OwnerCard({ data, setData }) {
   React.useEffect(() => {
