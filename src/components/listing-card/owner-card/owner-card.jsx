@@ -7,8 +7,9 @@ import {
   NumberIncrementStepper, NumberInputField,
 } from '@chakra-ui/react';
 import { errorMsg } from '../../../utils/text-utils';
+import TotalHoldings from './total-holdings';
 
-function OwnerCard({ data, setData, setValid }) {
+function OwnerCard({ data, setData }) {
   return (
     <CardBody
       alignItems="center"
@@ -51,63 +52,7 @@ function OwnerCard({ data, setData, setValid }) {
             <Input type="text" value={data.address} onChange={(e) => setData({ ...data, address: e.target.value })} />
             <FormErrorMessage>{errorMsg}</FormErrorMessage>
           </FormControl>
-          <HStack marginTop="25px">
-            <FormControl isRequired>
-              <FormLabel>Total Holdings</FormLabel>
-              <NumberInput min={0} value={data.totalHoldings} width="150px" onChange={(e) => setData({ ...data, totalHoldings: Number(e) })}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <FormErrorMessage>{errorMsg}</FormErrorMessage>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Class A</FormLabel>
-              <NumberInput min={0} value={data.classA} width="100px" onChange={(e) => setData({ ...data, classA: Number(e) })}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <FormErrorMessage>{errorMsg}</FormErrorMessage>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Class B</FormLabel>
-              <NumberInput min={0} value={data.classB} width="100px" onChange={(e) => setData({ ...data, classB: Number(e) })}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <FormErrorMessage>{errorMsg}</FormErrorMessage>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Class C</FormLabel>
-              <NumberInput min={0} value={data.classC} width="100px" onChange={(e) => setData({ ...data, classC: Number(e) })}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <FormErrorMessage>{errorMsg}</FormErrorMessage>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Class D</FormLabel>
-              <NumberInput min={0} value={data.classD} width="100px" onChange={(e) => setData({ ...data, classD: Number(e) })}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <FormErrorMessage>{errorMsg}</FormErrorMessage>
-            </FormControl>
-          </HStack>
+          <TotalHoldings data={data} setData={setData} />
           <HStack marginBottom="20px" marginTop="25px">
             <FormControl isRequired>
               <FormLabel>Unique Legal Entities</FormLabel>
