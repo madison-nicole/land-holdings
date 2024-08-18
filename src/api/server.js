@@ -16,15 +16,11 @@ export async function saveOwner(userId, ownerData) {
 }
 
 /**
- * Save a game to a user's logged games
+ * Fetches a user's saved game
  * @param {string} username
- * @param {object} game
- * @param {object} review
- * @returns game if game is successfuly saved, else throw error
+ * @returns array of user's games
  */
-// export async function saveGame(username, game, review) {
-//   const fields = { username, game, review };
-
-//   const response = await axios.post(`${SERVER_URL}/users/${username}/games`, fields, { headers: { authorization: localStorage.getItem('token') } });
-//   return response.data;
-// }
+export async function getOwners(userId) {
+  const response = await axios.get(`${SERVER_URL}/${userId}/owners`);
+  return Array.from(response.data);
+}

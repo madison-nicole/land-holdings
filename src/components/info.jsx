@@ -5,6 +5,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
+import { useUser } from '@clerk/clerk-react';
 import Owners from './owners';
 import LandHoldings from './land-holdings';
 import JumpToTop from './jump-to-top';
@@ -12,6 +13,10 @@ import ListingCard from './listing-card/listing-card';
 
 function Info() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const userInfo = useUser();
+  const userId = userInfo.user.id;
+
+  console.log('userId', userId);
 
   // const onSelectGame = useCallback((game, coverUrl, year, avgRating) => {
   //   dispatch(selectGame(game, coverUrl, year, avgRating));
@@ -45,10 +50,10 @@ function Info() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Owners />
+            <Owners userId={userId} />
           </TabPanel>
           <TabPanel>
-            <LandHoldings />
+            <LandHoldings userId={userId} />
           </TabPanel>
         </TabPanels>
       </Tabs>

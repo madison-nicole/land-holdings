@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './style.scss';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import rootReducer from './reducers';
 
 import App from './components/app';
@@ -19,9 +20,14 @@ const store = configureStore({
   reducer: rootReducer,
 });
 
+// creates react query client
+const queryClient = new QueryClient();
+
 const root = createRoot(document.getElementById('main'));
 root.render(
-  <Provider store={store}>
-    <App publishableKey={PUBLISHABLE_KEY} />
-  </Provider>,
+  <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
+      <App publishableKey={PUBLISHABLE_KEY} />
+    </Provider>
+  </QueryClientProvider>,
 );

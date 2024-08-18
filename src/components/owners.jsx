@@ -1,11 +1,12 @@
 import React from 'react';
-// import { useQuery } from '@tanstack/react-query';
-// import { fetchListings } from '../actions';
-// import { listingTypes } from '../utils/listing-utils';
+import { useQuery } from '@tanstack/react-query';
+import { fetchOwners } from '../actions';
 
-function Owners() {
+function Owners({ userId }) {
   // Loads data for the owners and land holdings using ReactQuery
-  // const owners = useQuery({ queryKey: ['owners'], queryFn: fetchListings(username, listingTypes.owners) });
+  const owners = useQuery({ queryKey: ['owners', userId], queryFn: fetchOwners(userId) });
+
+  console.log('owners.data from reactquery', owners.data);
 
   return (
     <div>

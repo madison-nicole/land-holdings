@@ -7,19 +7,33 @@ import * as Server from '../api/server';
  * @param string unique user ID
  * @returns listing if listing is successfuly saved, else throw error
  */
-function addOwner(userId, ownerData) {
+export function addOwner(userId, ownerData) {
   return async () => {
     try {
       const { user, newOwner } = await Server.saveGame(userId, ownerData);
       const newListings = [...user.owners, newOwner];
       return newListings;
     } catch (error) {
-      throw new Error('Unable to add listing');
+      throw new Error('Unable to add owner');
     }
   };
 }
 
-export default addOwner;
+export function fetchOwners(userId) {
+  // takes in an object with email and password (minimal user object)
+  // returns a thunk method that takes dispatch as an argument
+  return async () => {
+    try {
+      const owners = await Server.getOwners(userId);
+
+      return owners;
+    } catch (error) {
+      // For now, if we get an error, just log it.
+      // Add error handling later
+      throw new Error('Unable to fetch owners');
+    }
+  };
+}
 
 /**
  * Save an owner listing to a user's account
