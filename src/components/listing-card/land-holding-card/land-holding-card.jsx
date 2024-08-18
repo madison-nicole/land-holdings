@@ -6,18 +6,14 @@ import {
   NumberInputStepper, NumberIncrementStepper,
   NumberDecrementStepper,
   FormHelperText,
-  VStack,
+  VStack, Button,
 } from '@chakra-ui/react';
 import {
   errorMsg, nameHelper,
 } from '../../../utils/text-utils';
 import SectionName from './section-name';
 
-function LandHoldingCard({ data, setData, setValid }) {
-  React.useEffect(() => {
-    console.log(data);
-  }, [data]);
-
+function LandHoldingCard({ data, setData, saveData }) {
   return (
     <CardBody
       alignItems="center"
@@ -82,6 +78,17 @@ function LandHoldingCard({ data, setData, setValid }) {
               </HStack>
             </RadioGroup>
           </FormControl>
+          <Button _hover={{ bg: '#a1c1d2' }}
+            aria-label="save land holding data"
+            bg="#bee3f8"
+            color="#06253f"
+            fontWeight={700}
+            marginLeft="250px"
+            type="submit"
+            variant="outline"
+            onClick={saveData}
+          >SAVE
+          </Button>
         </form>
       </VStack>
     </CardBody>

@@ -6,22 +6,24 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
+import { useUser } from '@clerk/clerk-react';
 import OwnerCard from './owner-card/owner-card';
 import LandHoldingCard from './land-holding-card/land-holding-card';
 import { emptyLandData, emptyOwnerData } from '../../utils/listing-utils';
 import { errorToast, successToast } from '../../utils/toast-utils';
+import addOwner from '../../actions/index';
 
 function ListingCard({ onClose, isOpen }) {
   const finalRef = useRef(null);
   const dispatch = useDispatch();
   const toast = useToast();
+  const userInfo = useUser();
+  const userId = userInfo.id;
 
   const [ownerData, setOwnerData] = useState(emptyOwnerData);
   const [landData, setLandData] = useState(emptyLandData);
 
-  // Determine if all form requirements are met
-  const [validOwnerForm, setValidOwnerForm] = useState(false);
-  const [validLandForm, setValidLandForm] = useState(false);
+  const validForm = true;
 
   const onCloseListing = useCallback(() => {
     // Close the modal
@@ -38,9 +40,11 @@ function ListingCard({ onClose, isOpen }) {
   // Save the owner entry
   const saveOwnerData = useCallback(() => {
     // Check that all field requirements are met
-    if (validOwnerForm) {
+    if (validForm) {
+      console.log(ownerData);
+
       // Save the owner listing
-      dispatch(addOwnerListing(ownerData));
+      dispatch(addOwner(userId, ownerData));
 
       // Close the modal and clear the data
       onCloseListing();
@@ -51,25 +55,25 @@ function ListingCard({ onClose, isOpen }) {
       // Display an error toast
       toast(errorToast);
     }
-  }, [validOwnerForm, dispatch, ownerData, onCloseListing, toast]);
+  }, [validForm, dispatch, userId, ownerData, onCloseListing, toast]);
 
   // Save the land holding entry
-  const saveLandData = useCallback(() => {
-    // Check that all field requirements are met
-    if (validLandForm) {
-      // Save the owner listing
-      dispatch(addLandListing(landData));
+  // const saveLandData = useCallback(() => {
+  //   // Check that all field requirements are met
+  //   if (validLandForm) {
+  //     // Save the owner listing
+  //     dispatch(addListing(landData, listingTypes.land, userId));
 
-      // Close the modal and clear the data
-      onCloseListing();
+  //     // Close the modal and clear the data
+  //     onCloseListing();
 
-      // Display success toast
-      toast(successToast);
-    } else {
-      // Display an error toast
-      toast(errorToast);
-    }
-  }, [validLandForm, dispatch, landData, onCloseListing, toast]);
+  //     // Display success toast
+  //     toast(successToast);
+  //   } else {
+  //     // Display an error toast
+  //     toast(errorToast);
+  //   }
+  // }, [validLandForm, dispatch, landData, userId, onCloseListing, toast]);
 
   return (
     <div>
@@ -99,7 +103,7 @@ function ListingCard({ onClose, isOpen }) {
                   </TabList>
                   <TabPanels>
                     <TabPanel>
-                      <OwnerCard data={ownerData} setData={setOwnerData} setValid={setValidOwnerForm} />
+                      <OwnerCard data={ownerData} setData={setOwnerData} />
                       <CardFooter>
                         <Button
                           _hover={{ bg: '#a1c1d2' }}
@@ -116,20 +120,7 @@ function ListingCard({ onClose, isOpen }) {
                       </CardFooter>
                     </TabPanel>
                     <TabPanel>
-                      <LandHoldingCard data={landData} setData={setLandData} setValid={setValidLandForm} />
-                      <CardFooter>
-                        <Button
-                          _hover={{ bg: '#a1c1d2' }}
-                          aria-label="save land holding data"
-                          bg="#bee3f8"
-                          color="#06253f"
-                          fontWeight={700}
-                          marginLeft="250px"
-                          variant="outline"
-                          onClick={saveLandData}
-                        >SAVE
-                        </Button>
-                      </CardFooter>
+                      <LandHoldingCard data={landData} setData={setLandData} />
                     </TabPanel>
                   </TabPanels>
                 </Tabs>

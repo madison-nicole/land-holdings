@@ -1,55 +1,93 @@
-// import * as Server from '../api/server';
+import * as Server from '../api/server';
 
-// // keys for actiontypes
-// export const ActionTypes = {
-//   // Auth Actions
-//   AUTH_USER: 'AUTH_USER',
-//   DEAUTH_USER: 'DEAUTH_USER',
-//   AUTH_ERROR: 'AUTH_ERROR',
-//   CLEAR_AUTH_ERROR: 'CLEAR_AUTH_ERROR',
-// };
+/**
+ * Save an owner listing to a user's account
+ * @param {object} data
+ * @param string type of data, either owners or landHoldings
+ * @param string unique user ID
+ * @returns listing if listing is successfuly saved, else throw error
+ */
+function addOwner(userId, ownerData) {
+  return async () => {
+    try {
+      const { user, newOwner } = await Server.saveGame(userId, ownerData);
+      const newListings = [...user.owners, newOwner];
+      return newListings;
+    } catch (error) {
+      throw new Error('Unable to add listing');
+    }
+  };
+}
 
-// export function signinUser(phone) {
-//   // takes in an object with emailOrUsername and password (minimal user object)
-//   // returns a thunk method that takes dispatch as an argument
+export default addOwner;
+
+/**
+ * Save an owner listing to a user's account
+ * @param {object} ownerData
+ * @returns owner if owner is successfuly saved, else throw error
+ */
+// export async function saveOwner(ownerData) {
+// const fields = ownerData;
+
+// const response = await
+// return response.data;
+// }
+
+// Add land holding listing to user's account
+// export function addLandListing(landData) {
 //   return async (dispatch) => {
 //     try {
-//       const fields = phone;
-//       const { token, user } = await Server.signin(fields);
-//       const games = await Server.getUserGames(user.username);
-//       dispatch({ type: ActionTypes.AUTH_USER });
+//       const { user, newGame } = await Server.saveLandHolding(landData);
+//       const newGames = [...userGames, newGame];
+//       dispatch({ type: ActionTypes.FETCH_USER_GAMES, payload: newGames });
 //       dispatch({ type: ActionTypes.FETCH_USER_INFO, payload: user });
-//       dispatch({ type: ActionTypes.FETCH_USER_GAMES, payload: games });
-
-//       localStorage.setItem('token', token);
 //     } catch (error) {
-//       dispatch(authError(error.response.data));
+//       dispatch({ type: ActionTypes.ERROR_SET, message: error });
 //     }
 //   };
 // }
 
-// export function signupUser(phone) {
+// Update owner listing to user's account
+// export function updateOwnerListing(userGames, username, game, review) {
+//   return async (dispatch) => {
+//     try {
+//       const user = await Server.updateGame(username, game, review);
+//       const newGames = [...userGames];
+//       const gameIdx = newGames.findIndex((savedGame) => String(game.id) === String(savedGame.id));
+//       newGames[gameIdx] = game;
+//       dispatch({ type: ActionTypes.FETCH_USER_GAMES, payload: newGames });
+//       dispatch({ type: ActionTypes.FETCH_USER_INFO, payload: user });
+//     } catch (error) {
+//       dispatch({ type: ActionTypes.ERROR_SET, message: error });
+//     }
+//   };
+// }
+
+// Update land holding listing to user's account
+// export function updateLandListing(userGames, username, game, review) {
+//   return async (dispatch) => {
+//     try {
+//       const user = await Server.updateGame(username, game, review);
+//       const newGames = [...userGames];
+//       const gameIdx = newGames.findIndex((savedGame) => String(game.id) === String(savedGame.id));
+//       newGames[gameIdx] = game;
+//       dispatch({ type: ActionTypes.FETCH_USER_GAMES, payload: newGames });
+//       dispatch({ type: ActionTypes.FETCH_USER_INFO, payload: user });
+//     } catch (error) {
+//       dispatch({ type: ActionTypes.ERROR_SET, message: error });
+//     }
+//   };
+// }
+
+// export function fetchListings(userId, type) {
 //   // takes in an object with email and password (minimal user object)
 //   // returns a thunk method that takes dispatch as an argument
-//   return async (dispatch) => {
+//   return async () => {
 //     try {
-//       const fields = phone;
-//       const { token, user } = await Server.signup(fields);
-//       localStorage.setItem('token', token);
-//       dispatch({ type: ActionTypes.AUTH_USER });
-//       dispatch({ type: ActionTypes.FETCH_USER_INFO, payload: user });
+//       const response = await axios.get(`${SERVER_URL}/${userId}/${type}`);
+//       return response.data;
 //     } catch (error) {
-//       dispatch(authError(error.response.data.error));
+//       throw new Error('Error fetching listings');
 //     }
-//   };
-// }
-
-// // deletes token from localstorage
-// // and deauths
-// export function signoutUser(navigate) {
-//   return (dispatch) => {
-//     localStorage.removeItem('token');
-//     dispatch({ type: ActionTypes.DEAUTH_USER });
-//     navigate('/');
 //   };
 // }

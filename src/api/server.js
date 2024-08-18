@@ -1,25 +1,30 @@
 import axios from 'axios';
 
 // API url
-export const SERVER_URL = '';
+export const SERVER_URL = 'http://localhost:9090/api';
 
 /**
- * Sign in user
- * @param {object} fields - username or email, password
- * @returns token and user data if successful
+ * Save an owner listing to a user's account
+ * @param {object} ownerData
+ * @returns owner if owner is successfuly saved, else throw error
  */
-export async function signin(fields) {
-  const response = await axios.post(`${SERVER_URL}/signin`, fields);
-  return { token: response.data.token, user: response.data.user };
+export async function saveOwner(userId, ownerData) {
+  const fields = ownerData;
+
+  const response = await axios.post(`${SERVER_URL}/${userId}/owners`, fields);
+  return response.data;
 }
 
 /**
- * Sign up user
- * @param {object} fields - username, email, password
- * @returns token if successful
+ * Save a game to a user's logged games
+ * @param {string} username
+ * @param {object} game
+ * @param {object} review
+ * @returns game if game is successfuly saved, else throw error
  */
-export async function signup(fields) {
-  const response = await axios.post(`${SERVER_URL}/signup`, fields);
-  const { token, user } = response.data;
-  return { token, user };
-}
+// export async function saveGame(username, game, review) {
+//   const fields = { username, game, review };
+
+//   const response = await axios.post(`${SERVER_URL}/users/${username}/games`, fields, { headers: { authorization: localStorage.getItem('token') } });
+//   return response.data;
+// }

@@ -24,3 +24,9 @@ export const emptyLandData = {
   range: '',
   titleSource: '',
 };
+
+// set up enum for entry types
+export const listingTypes = Object.freeze({
+  owners: 'owners',
+  land: 'landHoldings',
+});
