@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
   Card, CardBody, Heading, CardFooter, Text,
@@ -6,9 +6,20 @@ import {
 import { fetchOwners } from '../actions';
 import alternateCardColor from '../utils/style-utils';
 
-function Owners({ userId }) {
+function Owners({ userId, getToken }) {
+  const [authToken, setAuthToken] = useState('');
+
+  useEffect(() => {
+    async function returnToken() {
+      const token = await getToken();
+      return token;
+    }
+
+    setAuthToken(returnToken());
+  }, [getToken]);
+
   // Loads data for the owners and land holdings using ReactQuery
-  const ownersQuery = useQuery({ queryKey: ['owners', userId], queryFn: fetchOwners(userId) });
+  const ownersQuery = useQuery({ queryKey: ['owners', userId], queryFn: fetchOwners(userId, authToken) });
   const owners = ownersQuery?.data;
 
   console.log('owners from reactquery', owners);

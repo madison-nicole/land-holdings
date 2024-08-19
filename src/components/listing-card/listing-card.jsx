@@ -12,7 +12,9 @@ import { emptyLandData, emptyOwnerData } from '../../utils/listing-utils';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import { addOwner } from '../../actions';
 
-function ListingCard({ onClose, isOpen, userId }) {
+function ListingCard({
+  onClose, isOpen, userId, getToken,
+}) {
   const finalRef = useRef(null);
   const dispatch = useDispatch();
   const toast = useToast();
@@ -35,11 +37,13 @@ function ListingCard({ onClose, isOpen, userId }) {
   }, [onClose]);
 
   // Save the owner entry
-  const saveOwnerData = useCallback(() => {
+  const saveOwnerData = useCallback(async () => {
     // Check that all field requirements are met
     if (validForm) {
+      const token = await getToken();
+
       // Save the owner listing
-      dispatch(addOwner(userId, ownerData));
+      dispatch(addOwner(userId, ownerData, token));
 
       // Close the modal and clear the data
       onCloseListing();
@@ -50,7 +54,7 @@ function ListingCard({ onClose, isOpen, userId }) {
       // Display an error toast
       toast(errorToast);
     }
-  }, [validForm, dispatch, userId, ownerData, onCloseListing, toast]);
+  }, [validForm, getToken, dispatch, userId, ownerData, onCloseListing, toast]);
 
   return (
     <div>

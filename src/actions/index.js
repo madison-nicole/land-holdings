@@ -11,20 +11,23 @@ export function addOwner(userId, ownerData) {
   return async () => {
     try {
       const { user, newOwner } = await Server.saveGame(userId, ownerData);
+      console.log(user, newOwner);
       const newListings = [...user.owners, newOwner];
+      console.log('newlistings', newListings);
       return newListings;
     } catch (error) {
+      console.log(error);
       throw new Error('Unable to add owner');
     }
   };
 }
 
-export function fetchOwners(userId) {
+export function fetchOwners(userId, token) {
   // takes in an object with email and password (minimal user object)
   // returns a thunk method that takes dispatch as an argument
   return async () => {
     try {
-      const owners = await Server.getOwners(userId);
+      const owners = await Server.getOwners(userId, token);
 
       return owners;
     } catch (error) {

@@ -22,9 +22,7 @@ function Info() {
 
   const openListingCard = useCallback(async () => {
     onOpen();
-    const token = await getToken();
-    console.log(token);
-  }, [getToken, onOpen]);
+  }, [onOpen]);
 
   return (
     <Flex alignItems="center" direction="column">
@@ -42,7 +40,7 @@ function Info() {
         >ADD
         </Button>
       </div>
-      <ListingCard isOpen={isOpen} userId={userId} onClose={onClose} />
+      <ListingCard getToken={getToken} isOpen={isOpen} userId={userId} onClose={onClose} />
       <Tabs colorScheme="blue" variant="soft-rounded">
         <TabList display="flex" justifyContent="center" margin={10}>
           <Tab cursor="pointer" fontSize={13.5} fontWeight={700}>Owners</Tab>
@@ -50,10 +48,10 @@ function Info() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Owners userId={userId} />
+            <Owners getToken={getToken} userId={userId} />
           </TabPanel>
           <TabPanel>
-            <LandHoldings userId={userId} />
+            <LandHoldings getToken={getToken} userId={userId} />
           </TabPanel>
         </TabPanels>
       </Tabs>

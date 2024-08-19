@@ -3,7 +3,7 @@ import React from 'react';
 // import { fetchListings } from '../actions';
 // import { listingTypes } from '../utils/listing-utils';
 
-function LandHoldings() {
+function LandHoldings({ getToken }) {
   // const landHoldings = useQuery({ queryKey: ['landHoldings'], queryFn: fetchListings(username, listingTypes.land) });
 
   return (
