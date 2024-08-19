@@ -6,19 +6,16 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { useUser } from '@clerk/clerk-react';
 import OwnerCard from './owner-card/owner-card';
 import LandHoldingCard from './land-holding-card/land-holding-card';
 import { emptyLandData, emptyOwnerData } from '../../utils/listing-utils';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import { addOwner } from '../../actions';
 
-function ListingCard({ onClose, isOpen }) {
+function ListingCard({ onClose, isOpen, userId }) {
   const finalRef = useRef(null);
   const dispatch = useDispatch();
   const toast = useToast();
-  const userInfo = useUser();
-  const userId = userInfo.user.id;
 
   const [ownerData, setOwnerData] = useState(emptyOwnerData);
   const [landData, setLandData] = useState(emptyLandData);

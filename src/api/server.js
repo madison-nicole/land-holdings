@@ -9,9 +9,9 @@ export const SERVER_URL = 'http://localhost:9090/api';
  * @returns owner if owner is successfuly saved, else throw error
  */
 export async function saveOwner(userId, ownerData) {
-  const fields = ownerData;
+  const fields = { userId, ownerData };
 
-  const response = await axios.post(`${SERVER_URL}/${userId}/owners`, fields);
+  const response = await axios.post(`${SERVER_URL}/${userId}/owners`, fields, { headers: { authorization: localStorage.getItem('token') } });
   return response.data;
 }
 

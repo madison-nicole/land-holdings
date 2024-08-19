@@ -14,13 +14,9 @@ import ListingCard from './listing-card/listing-card';
 function Info() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const userInfo = useUser();
-  const userId = userInfo.user.id;
+  const userId = userInfo.user.id.substring(5);
 
   console.log('userId', userId);
-
-  // const onSelectGame = useCallback((game, coverUrl, year, avgRating) => {
-  //   dispatch(selectGame(game, coverUrl, year, avgRating));
-  // }, [dispatch]);
 
   const openListingCard = useCallback(() => {
     onOpen();
@@ -42,7 +38,7 @@ function Info() {
         >ADD
         </Button>
       </div>
-      <ListingCard isOpen={isOpen} onClose={onClose} />
+      <ListingCard isOpen={isOpen} userId={userId} onClose={onClose} />
       <Tabs colorScheme="blue" variant="soft-rounded">
         <TabList display="flex" justifyContent="center" margin={10}>
           <Tab cursor="pointer" fontSize={13.5} fontWeight={700}>Owners</Tab>
