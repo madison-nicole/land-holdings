@@ -5,7 +5,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { useUser } from '@clerk/clerk-react';
+import { useUser, useAuth } from '@clerk/clerk-react';
 import Owners from './owners';
 import LandHoldings from './land-holdings';
 import JumpToTop from './jump-to-top';
@@ -18,9 +18,13 @@ function Info() {
 
   console.log('userId', userId);
 
-  const openListingCard = useCallback(() => {
+  const { getToken } = useAuth();
+
+  const openListingCard = useCallback(async () => {
     onOpen();
-  }, [onOpen]);
+    const token = await getToken();
+    console.log(token);
+  }, [getToken, onOpen]);
 
   return (
     <Flex alignItems="center" direction="column">
