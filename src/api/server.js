@@ -12,7 +12,6 @@ export async function saveOwner(userId, ownerData, token) {
   const fields = { userId, ownerData };
 
   const response = await axios.post(`${SERVER_URL}/${userId}/owners`, fields, { headers: { Authorization: `Bearer ${token}` } });
-  console.log(response.data);
   return response.data;
 }
 

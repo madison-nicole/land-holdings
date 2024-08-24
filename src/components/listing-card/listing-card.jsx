@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useState } from 'react';
 import {
   Modal, ModalOverlay, ModalContent, ModalBody, Card,
-  ModalCloseButton, Button, CardFooter, Tabs, TabList,
+  ModalCloseButton, Tabs, TabList,
   TabPanel, Tab, TabPanels, Flex,
   useToast,
 } from '@chakra-ui/react';
@@ -84,21 +84,7 @@ function ListingCard({
                   </TabList>
                   <TabPanels>
                     <TabPanel>
-                      <OwnerCard data={ownerData} setData={setOwnerData} />
-                      <CardFooter>
-                        <Button
-                          _hover={{ bg: '#a1c1d2' }}
-                          aria-label="save owner data"
-                          bg="#bee3f8"
-                          color="#06253f"
-                          fontWeight={700}
-                          marginLeft="250px"
-                          marginTop="38.5px"
-                          variant="outline"
-                          onClick={saveOwnerData}
-                        >SAVE
-                        </Button>
-                      </CardFooter>
+                      <OwnerCard data={ownerData} setData={setOwnerData} onSave={saveOwnerData} />
                     </TabPanel>
                     <TabPanel>
                       <LandHoldingCard data={landData} setData={setLandData} />

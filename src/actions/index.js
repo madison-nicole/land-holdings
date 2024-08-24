@@ -7,14 +7,17 @@ import * as Server from '../api/server';
  * @param string unique user ID
  * @returns listing if listing is successfuly saved, else throw error
  */
-export function addOwner(userId, ownerData) {
+export function addOwner(userId, ownerData, token) {
   return async () => {
     try {
-      const { user, newOwner } = await Server.saveGame(userId, ownerData);
-      console.log(user, newOwner);
-      const newListings = [...user.owners, newOwner];
-      console.log('newlistings', newListings);
-      return newListings;
+      // const { user, newOwner } = await Server.saveOwner(userId, ownerData);
+      const owner = await Server.saveOwner(userId, ownerData, token);
+      console.log('addOwner owner', owner);
+      return owner;
+      // console.log('user, newOwner', user, newOwner);
+      // const newListings = [...user.owners, newOwner];
+      // console.log('newlistings', newListings);
+      // return newListings;
     } catch (error) {
       console.log(error);
       throw new Error('Unable to add owner');
@@ -28,7 +31,6 @@ export function fetchOwners(userId, token) {
   return async () => {
     try {
       const owners = await Server.getOwners(userId, token);
-
       return owners;
     } catch (error) {
       // For now, if we get an error, just log it.

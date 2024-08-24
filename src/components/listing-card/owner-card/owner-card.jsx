@@ -5,11 +5,12 @@ import {
   HStack, VStack, NumberInput,
   NumberInputStepper, NumberDecrementStepper,
   NumberIncrementStepper, NumberInputField,
+  CardFooter, Button,
 } from '@chakra-ui/react';
 import { errorMsg } from '../../../utils/text-utils';
 import TotalHoldings from './total-holdings';
 
-function OwnerCard({ data, setData }) {
+function OwnerCard({ data, setData, onSave }) {
   return (
     <CardBody
       alignItems="center"
@@ -78,6 +79,19 @@ function OwnerCard({ data, setData }) {
             </FormControl>
           </HStack>
         </form>
+        <CardFooter>
+          <Button
+            _hover={{ bg: '#a1c1d2' }}
+            aria-label="save owner data"
+            bg="#bee3f8"
+            color="#06253f"
+            fontWeight={700}
+            marginTop="38.5px"
+            variant="outline"
+            onClick={onSave}
+          >SAVE
+          </Button>
+        </CardFooter>
       </VStack>
     </CardBody>
   );

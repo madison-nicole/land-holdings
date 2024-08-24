@@ -84,6 +84,7 @@ function LandHoldingCard({ data, setData, saveData }) {
             color="#06253f"
             fontWeight={700}
             marginLeft="250px"
+            marginTop="50px"
             type="submit"
             variant="outline"
             onClick={saveData}

@@ -16,8 +16,6 @@ function Info() {
   const userInfo = useUser();
   const userId = userInfo.user.id.substring(5);
 
-  console.log('userId', userId);
-
   const { getToken } = useAuth();
 
   const openListingCard = useCallback(async () => {
