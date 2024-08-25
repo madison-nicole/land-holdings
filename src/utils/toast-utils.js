@@ -55,3 +55,18 @@ export const errorFetchOwnerToast = {
   duration: 3000,
   isClosable: true,
 };
+
+export const successAddLandToast = {
+  title: 'Land holding successfully added.',
+  status: 'success',
+  duration: 3000,
+  isClosable: true,
+};
+
+export const errorAddLandToast = {
+  title: 'Invalid input',
+  description: 'Land holding cannot be added if the owner does not already exist.',
+  status: 'error',
+  duration: 3000,
+  isClosable: true,
+};

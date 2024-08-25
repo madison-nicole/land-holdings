@@ -8,8 +8,10 @@ import {
 import { useDispatch } from 'react-redux';
 import OwnerCard from './owner-card/owner-card';
 import LandHoldingCard from './land-holding-card/land-holding-card';
-import { successAddOwnerToast, errorFormToast, errorAddOwnerToast } from '../../utils/toast-utils';
-import { addOwner } from '../../actions';
+import {
+  successAddOwnerToast, errorFormToast, errorAddOwnerToast, successAddLandToast, errorAddLandToast,
+} from '../../utils/toast-utils';
+import { addLandHolding, addOwner, fetchOwner } from '../../actions';
 
 function ListingCard({
   onCloseListing, isOpen, userId, getToken, editMode,
@@ -46,6 +48,43 @@ function ListingCard({
     }
   }, [validForm, getToken, dispatch, userId, ownerData, onCloseListing, toast]);
 
+  // Save the owner entry
+  const saveLandData = useCallback(async () => {
+    const token = await getToken();
+
+    let owner;
+
+    try {
+      owner = await fetchOwner(userId, ownerName, token);
+      console.log('owner', owner);
+    } catch (error) {
+      // Display an error toast if owner does not exist
+      console.log('owner does not exist', error);
+      toast(errorAddLandToast);
+      return error;
+    }
+
+    try {
+      // Save the owner listing
+      const land = await dispatch(addLandHolding(userId, landData, token));
+      console.log('land', land);
+      // Close the modal and clear the data, display success toast
+      onCloseListing();
+      toast(successAddLandToast);
+      return land;
+    } catch (error) {
+      // Display an error toast if form was valid but save failed
+      onCloseListing();
+      toast(errorAddLandToast);
+      return error;
+    }
+    // // Check that all field requirements are met
+    // if (!validForm) {
+    //   // Display an error toast if form invalid
+    //   toast(errorFormToast);
+    // }
+  }, [getToken, userId, ownerName, dispatch, landData, toast, onCloseListing]);
+
   return (
     <div>
       <Modal blockScrollOnMount={false}
@@ -74,10 +113,23 @@ function ListingCard({
                   </TabList>
                   <TabPanels>
                     <TabPanel>
-                      <OwnerCard data={ownerData} editMode={editMode} ownerName={ownerName} setData={setOwnerData} onSave={saveOwnerData} onUpdate={onUpdateOwner} />
+                      <OwnerCard
+                        data={ownerData}
+                        editMode={editMode}
+                        ownerName={ownerName}
+                        setData={setOwnerData}
+                        onSave={saveOwnerData}
+                        onUpdate={onUpdateOwner}
+                      />
                     </TabPanel>
                     <TabPanel>
-                      <LandHoldingCard data={landData} setData={setLandData} />
+                      <LandHoldingCard
+                        data={landData}
+                        editMode={editMode}
+                        setData={setLandData}
+                        onSave={saveLandData}
+                        // onUpdate={}
+                      />
                     </TabPanel>
                   </TabPanels>
                 </Tabs>

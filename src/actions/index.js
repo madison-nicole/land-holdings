@@ -92,3 +92,23 @@ export function updateOwner(userId, ownerName, ownerData, token) {
     }
   };
 }
+
+/**
+ * Save a land holding to an owner
+ * @param string unique user ID
+ * @param string unique owner name
+ * @param object the land data
+ * @param string auth token from Clerk
+ * @returns holding if it is successfuly saved, else throws error
+ */
+export function addLandHolding(userId, landData, token) {
+  const { ownerName } = landData;
+  return async () => {
+    try {
+      const land = await Server.saveLandHolding(userId, ownerName, landData, token);
+      return land;
+    } catch (error) {
+      throw new Error('Unable to add land holding');
+    }
+  };
+}

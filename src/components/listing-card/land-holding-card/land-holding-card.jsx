@@ -6,14 +6,48 @@ import {
   NumberInputStepper, NumberIncrementStepper,
   NumberDecrementStepper,
   FormHelperText,
-  VStack, Button,
+  VStack, Button, CardFooter,
 } from '@chakra-ui/react';
 import {
   errorMsg, nameHelper,
 } from '../../../utils/text-utils';
 import SectionName from './section-name';
 
-function LandHoldingCard({ data, setData, saveData }) {
+function LandHoldingCard({
+  data, setData, editMode, onSave,
+}) {
+  function renderSaveButton() {
+    if (editMode) {
+      return (
+        <Button
+          _hover={{ bg: '#a1c1d2' }}
+          aria-label="save updated land holding data"
+          bg="#bee3f8"
+          color="#06253f"
+          fontWeight={700}
+          type="submit"
+          variant="outline"
+          // onClick={onUpdate}
+        >UPDATE
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          _hover={{ bg: '#a1c1d2' }}
+          aria-label="save land holding data"
+          bg="#bee3f8"
+          color="#06253f"
+          fontWeight={700}
+          type="submit"
+          variant="outline"
+          onClick={onSave}
+        >SAVE
+        </Button>
+      );
+    }
+  }
+
   return (
     <CardBody
       alignItems="center"
@@ -78,19 +112,10 @@ function LandHoldingCard({ data, setData, saveData }) {
               </HStack>
             </RadioGroup>
           </FormControl>
-          <Button _hover={{ bg: '#a1c1d2' }}
-            aria-label="save land holding data"
-            bg="#bee3f8"
-            color="#06253f"
-            fontWeight={700}
-            marginLeft="250px"
-            marginTop="50px"
-            type="submit"
-            variant="outline"
-            onClick={saveData}
-          >SAVE
-          </Button>
         </form>
+        <CardFooter>
+          {renderSaveButton()}
+        </CardFooter>
       </VStack>
     </CardBody>
   );
