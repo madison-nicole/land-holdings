@@ -11,6 +11,7 @@ function Footer() {
       <Box
         bg={useColorModeValue('gray.50', 'gray.900')}
         color="white"
+        height="75px"
       >
         <Container
           align={{ base: 'center', md: 'center' }}
@@ -21,7 +22,7 @@ function Footer() {
           py={4}
           spacing={4}
         >
-          <Image height={32} src={logo} />
+          <Image height="60px" mb="10px" src={logo} />
           <Text>© 2024 Owner and Land Holdings. By Madison Nicole.</Text>
         </Container>
       </Box>
