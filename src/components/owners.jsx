@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
   Card, CardBody, Heading, CardFooter, Text,
-  IconButton,
+  IconButton, Flex, HStack,
 } from '@chakra-ui/react';
 import {
   ChevronDownIcon, ChevronUpIcon,
@@ -11,19 +11,10 @@ import {
 } from '@chakra-ui/icons';
 import { fetchOwners } from '../actions';
 import { alternateCardColor, alternateBgColor } from '../utils/style-utils';
+import OwnerField from './owner-field';
 
-function Owners({ userId, getToken }) {
-  const [authToken, setAuthToken] = useState('');
+function Owners({ userId, authToken, onDelete }) {
   const [expanded, setExpanded] = useState(null);
-
-  useEffect(() => {
-    async function returnToken() {
-      const token = await getToken();
-      return token;
-    }
-
-    setAuthToken(returnToken());
-  }, [getToken]);
 
   // Loads data for the owners and land holdings using ReactQuery
   const ownersQuery = useQuery({ queryKey: ['owners', userId], queryFn: fetchOwners(userId, authToken) });
@@ -73,7 +64,7 @@ function Owners({ userId, getToken }) {
             marginRight="10px"
             padding={0}
             size="md"
-            variant="solid"
+            variant="link"
             onClick={() => toggleExpandOwner(idx)}
           />
 
@@ -82,18 +73,39 @@ function Owners({ userId, getToken }) {
             flexDirection="row"
             padding="0px"
           >
-            <Heading
-              alignItems="center"
-              cursor="pointer"
-              display="flex"
-              fontSize={15}
-              fontWeight="600"
-              mb="15px"
-              mt="15px"
-              width="100%"
-            >
-              {owner.ownerName}
-            </Heading>
+            <Flex direction="column" justifyContent="center">
+              <Heading
+                alignItems="center"
+                cursor="pointer"
+                display="flex"
+                fontSize={15}
+                fontWeight="600"
+                mb="15px"
+                mt="15px"
+                width="100%"
+              >
+                {owner.ownerName}
+              </Heading>
+              <Flex
+                direction="column"
+                display={expanded === idx + 1 ? 'flex' : 'none'}
+                marginBottom="15px"
+                marginTop="15px"
+              >
+                <OwnerField field="Entity Type: " info={owner.entityType} />
+                <OwnerField field="Owner Type: " info={owner.ownerType} />
+                <OwnerField field="Address: " info={owner.address} />
+                <OwnerField field="Total Holdings: " info={owner.totalHoldings} />
+                <HStack>
+                  <OwnerField field="Class A:" info={owner.classA} />
+                  <OwnerField field="Class B:" info={owner.classB} />
+                  <OwnerField field="Class C:" info={owner.classC} />
+                  <OwnerField field="Class D:" info={owner.classD} />
+                </HStack>
+                <OwnerField field="Unique Legal Entities: " info={owner.legalEntities} />
+                <OwnerField field="Total Net Mineral Acres: " info={owner.mineralAcres} />
+              </Flex>
+            </Flex>
           </CardBody>
           <CardFooter
             alignItems="center"
@@ -106,14 +118,17 @@ function Owners({ userId, getToken }) {
               color="#06253f"
               icon={<EditIcon />}
               margin={2}
-              size="md"
+              size="sm"
+              variant="ghost"
             />
             <IconButton
               aria-label="Delete owner information"
               color="#06253f"
               icon={<DeleteIcon />}
               margin={2}
-              size="md"
+              size="sm"
+              variant="ghost"
+              onClick={() => onDelete(owner.ownerName)}
             />
           </CardFooter>
         </Card>

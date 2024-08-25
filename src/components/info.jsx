@@ -1,26 +1,58 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import {
   Tabs, TabList, TabPanel, TabPanels,
   Tab, Flex, Button,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { useUser, useAuth } from '@clerk/clerk-react';
+import { useDispatch } from 'react-redux';
 import Owners from './owners';
 import LandHoldings from './land-holdings';
 import JumpToTop from './jump-to-top';
 import ListingCard from './listing-card/listing-card';
+import { deleteOwner } from '../actions';
+import { errorDeleteToast, successDeleteToast } from '../utils/toast-utils';
 
 function Info() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const userInfo = useUser();
   const userId = userInfo.user.id.substring(5);
-
   const { getToken } = useAuth();
+  const [authToken, setAuthToken] = useState('');
+  const dispatch = useDispatch();
+  const toast = useToast();
+
+  useEffect(() => {
+    async function returnToken() {
+      const token = await getToken();
+      return token;
+    }
+
+    setAuthToken(returnToken());
+  }, [getToken]);
 
   const openListingCard = useCallback(async () => {
     onOpen();
   }, [onOpen]);
+
+  // Delete an owner entry
+  const onDeleteOwner = useCallback(async (ownerName) => {
+    // Get auth token
+    const token = await getToken();
+
+    // Save the owner listing
+    const deletedOwner = await dispatch(deleteOwner(userId, ownerName, token));
+
+    // Display success toast
+    if (deletedOwner) {
+      toast(successDeleteToast);
+    } else {
+      // Display an error toast
+      toast(errorDeleteToast);
+    }
+  }, [getToken, dispatch, userId, toast]);
 
   return (
     <Flex alignItems="center" direction="column">
@@ -46,7 +78,7 @@ function Info() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Owners getToken={getToken} userId={userId} />
+            <Owners authToken={authToken} userId={userId} onDelete={onDeleteOwner} />
           </TabPanel>
           <TabPanel>
             <LandHoldings getToken={getToken} userId={userId} />

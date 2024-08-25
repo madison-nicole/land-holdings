@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import OwnerCard from './owner-card/owner-card';
 import LandHoldingCard from './land-holding-card/land-holding-card';
 import { emptyLandData, emptyOwnerData } from '../../utils/listing-utils';
-import { errorToast, successToast } from '../../utils/toast-utils';
+import { successAddOwnerToast, errorFormToast, errorAddOwnerToast } from '../../utils/toast-utils';
 import { addOwner } from '../../actions';
 
 function ListingCard({
@@ -43,16 +43,21 @@ function ListingCard({
       const token = await getToken();
 
       // Save the owner listing
-      dispatch(addOwner(userId, ownerData, token));
+      const owner = await dispatch(addOwner(userId, ownerData, token));
 
       // Close the modal and clear the data
       onCloseListing();
 
-      // Display success toast
-      toast(successToast);
+      if (owner) {
+        // Display success toast
+        toast(successAddOwnerToast);
+      } else {
+        // Display an error toast if form was valid but save failed
+        toast(errorAddOwnerToast);
+      }
     } else {
-      // Display an error toast
-      toast(errorToast);
+      // Display an error toast if form invalid
+      toast(errorFormToast);
     }
   }, [validForm, getToken, dispatch, userId, ownerData, onCloseListing, toast]);
 
