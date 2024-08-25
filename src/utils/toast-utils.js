@@ -34,3 +34,24 @@ export const errorDeleteToast = {
   duration: 3000,
   isClosable: true,
 };
+
+export const successUpdateOwnerToast = {
+  title: 'Owner successfully updated.',
+  status: 'success',
+  duration: 3000,
+  isClosable: true,
+};
+
+export const errorUpdateOwnerToast = {
+  title: 'Failed to update owner',
+  status: 'error',
+  duration: 3000,
+  isClosable: true,
+};
+
+export const errorFetchOwnerToast = {
+  title: 'Failed to fetch owner data',
+  status: 'error',
+  duration: 3000,
+  isClosable: true,
+};

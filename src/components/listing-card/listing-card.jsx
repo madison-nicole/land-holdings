@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback } from 'react';
 import {
   Modal, ModalOverlay, ModalContent, ModalBody, Card,
   ModalCloseButton, Tabs, TabList,
@@ -8,33 +8,18 @@ import {
 import { useDispatch } from 'react-redux';
 import OwnerCard from './owner-card/owner-card';
 import LandHoldingCard from './land-holding-card/land-holding-card';
-import { emptyLandData, emptyOwnerData } from '../../utils/listing-utils';
 import { successAddOwnerToast, errorFormToast, errorAddOwnerToast } from '../../utils/toast-utils';
 import { addOwner } from '../../actions';
 
 function ListingCard({
-  onClose, isOpen, userId, getToken,
+  onCloseListing, isOpen, userId, getToken, editMode,
+  ownerData, landData, setOwnerData, setLandData, updateOwnerData,
 }) {
   const finalRef = useRef(null);
   const dispatch = useDispatch();
   const toast = useToast();
 
-  const [ownerData, setOwnerData] = useState(emptyOwnerData);
-  const [landData, setLandData] = useState(emptyLandData);
-
   const validForm = true;
-
-  const onCloseListing = useCallback(() => {
-    // Close the modal
-    onClose();
-
-    // Clear the fields
-    setOwnerData(emptyOwnerData);
-    setLandData(emptyLandData);
-
-    // Clear the selected listing
-    // dispatch(clearSelectedGame());
-  }, [onClose]);
 
   // Save the owner entry
   const saveOwnerData = useCallback(async () => {
@@ -89,7 +74,7 @@ function ListingCard({
                   </TabList>
                   <TabPanels>
                     <TabPanel>
-                      <OwnerCard data={ownerData} setData={setOwnerData} onSave={saveOwnerData} />
+                      <OwnerCard data={ownerData} editMode={editMode} setData={setOwnerData} onSave={saveOwnerData} onUpdate={updateOwnerData} />
                     </TabPanel>
                     <TabPanel>
                       <LandHoldingCard data={landData} setData={setLandData} />

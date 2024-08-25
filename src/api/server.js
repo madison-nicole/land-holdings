@@ -29,6 +29,18 @@ export async function getOwners(userId, token) {
 }
 
 /**
+ * Fetches a user's saved owner
+ * @param string unique user ID
+ * @param string unique owner name
+ * @param string auth token from Clerk
+ * @returns the owner
+ */
+export async function getOwner(userId, ownerName, token) {
+  const response = await axios.get(`${SERVER_URL}/${userId}/owners/${ownerName}`, { headers: { Authorization: `Bearer ${token}` } });
+  return response.data;
+}
+
+/**
  * Deletes an owner
  * @param string unique user ID
  * @param string unique owner name
@@ -37,5 +49,19 @@ export async function getOwners(userId, token) {
  */
 export async function deleteOwnerListing(userId, ownerName, token) {
   const response = await axios.delete(`${SERVER_URL}/${userId}/owners/${ownerName}`, { headers: { Authorization: `Bearer ${token}` } });
+  return response.data;
+}
+
+/**
+ * Updates an owner
+ * @param string unique user ID
+ * @param string unique owner name
+ * @param string auth token from Clerk
+ * @returns updated owner if update is successful
+ */
+export async function updateOwnerListing(userId, ownerName, ownerData, token) {
+  const fields = { userId, ownerData };
+
+  const response = await axios.put(`${SERVER_URL}/${userId}/owners/${ownerName}`, fields, { headers: { Authorization: `Bearer ${token}` } });
   return response.data;
 }

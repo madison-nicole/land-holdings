@@ -12,17 +12,25 @@ import Owners from './owners';
 import LandHoldings from './land-holdings';
 import JumpToTop from './jump-to-top';
 import ListingCard from './listing-card/listing-card';
-import { deleteOwner } from '../actions';
-import { errorDeleteToast, successDeleteToast } from '../utils/toast-utils';
+import { deleteOwner, fetchOwner, updateOwner } from '../actions';
+import {
+  errorDeleteToast, errorFetchOwnerToast, successDeleteToast,
+  errorUpdateOwnerToast, successUpdateOwnerToast,
+} from '../utils/toast-utils';
+import { emptyOwnerData, emptyLandData } from '../utils/listing-utils';
 
 function Info() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const userInfo = useUser();
   const userId = userInfo.user.id.substring(5);
   const { getToken } = useAuth();
-  const [authToken, setAuthToken] = useState('');
   const dispatch = useDispatch();
   const toast = useToast();
+
+  const [authToken, setAuthToken] = useState('');
+  const [ownerData, setOwnerData] = useState(emptyOwnerData);
+  const [landData, setLandData] = useState(emptyLandData);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     async function returnToken() {
@@ -36,6 +44,16 @@ function Info() {
   const openListingCard = useCallback(async () => {
     onOpen();
   }, [onOpen]);
+
+  const onCloseListing = useCallback(() => {
+    // Close the modal
+    onClose();
+
+    // Clear the fields
+    setOwnerData(emptyOwnerData);
+    setLandData(emptyLandData);
+    setEditMode(false);
+  }, [onClose]);
 
   // Delete an owner entry
   const onDeleteOwner = useCallback(async (ownerName) => {
@@ -54,6 +72,49 @@ function Info() {
     }
   }, [getToken, dispatch, userId, toast]);
 
+  // Edit an owner entry
+  const onEditOwner = useCallback(async (ownerName) => {
+    setEditMode(true);
+
+    // Get auth token
+    const token = await getToken();
+
+    // Get owner data
+    const fetchedOwnerData = await dispatch(fetchOwner(userId, ownerName, token));
+
+    // If fetch owner fails
+    if (!fetchedOwnerData) {
+      toast(errorFetchOwnerToast);
+    } else {
+      // Set owner data to current
+      setOwnerData(fetchedOwnerData);
+
+      // Open listing card with owner info
+      openListingCard();
+    }
+  }, [getToken, dispatch, userId, toast, openListingCard]);
+
+  // Save an edited owner entry
+  const onSaveEditOwner = useCallback(async (ownerName) => {
+    // Get auth token
+    const token = await getToken();
+
+    // Save the owner listing
+    const updatedOwner = await dispatch(updateOwner(userId, ownerName, ownerData, token));
+
+    // Display success toast
+    if (updatedOwner) {
+      console.log('updatedOwner', updatedOwner);
+      toast(successUpdateOwnerToast);
+    } else {
+      // Display an error toast
+      toast(errorUpdateOwnerToast);
+    }
+
+    // Close the listing card and clear the data
+    onCloseListing();
+  }, [dispatch, getToken, onCloseListing, ownerData, toast, userId]);
+
   return (
     <Flex alignItems="center" direction="column">
       <div>
@@ -70,7 +131,17 @@ function Info() {
         >ADD
         </Button>
       </div>
-      <ListingCard getToken={getToken} isOpen={isOpen} userId={userId} onClose={onClose} />
+      <ListingCard editMode={editMode}
+        getToken={getToken}
+        isOpen={isOpen}
+        landData={landData}
+        ownerData={ownerData}
+        setLandData={setLandData}
+        setOwnerData={setOwnerData}
+        updateOwnerData={onSaveEditOwner}
+        userId={userId}
+        onCloseListing={onCloseListing}
+      />
       <Tabs colorScheme="blue" variant="soft-rounded">
         <TabList display="flex" justifyContent="center" margin={10}>
           <Tab cursor="pointer" fontSize={13.5} fontWeight={700}>Owners</Tab>
@@ -78,7 +149,7 @@ function Info() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Owners authToken={authToken} userId={userId} onDelete={onDeleteOwner} />
+            <Owners authToken={authToken} userId={userId} onDelete={onDeleteOwner} onEdit={onEditOwner} />
           </TabPanel>
           <TabPanel>
             <LandHoldings getToken={getToken} userId={userId} />

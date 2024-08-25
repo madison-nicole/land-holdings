@@ -27,8 +27,6 @@ export function addOwner(userId, ownerData, token) {
  * @returns owners if owners are successfuly fetched, else throws error
  */
 export function fetchOwners(userId, token) {
-  // takes in an object with email and password (minimal user object)
-  // returns a thunk method that takes dispatch as an argument
   return async () => {
     try {
       const owners = await Server.getOwners(userId, token);
@@ -37,6 +35,26 @@ export function fetchOwners(userId, token) {
       // For now, if we get an error, just log it.
       // Add error handling later
       throw new Error('Unable to fetch owners');
+    }
+  };
+}
+
+/**
+ * Fetch one owner listing saved on a user's account
+ * @param string unique user ID
+ * @param string unique owner name
+ * @param string auth token from Clerk
+ * @returns owner if owner is successfuly fetched, else throws error
+ */
+export function fetchOwner(userId, ownerName, token) {
+  return async () => {
+    try {
+      const owner = await Server.getOwner(userId, ownerName, token);
+      return owner;
+    } catch (error) {
+      // For now, if we get an error, just log it.
+      // Add error handling later
+      throw new Error('Unable to fetch owner');
     }
   };
 }
@@ -55,6 +73,24 @@ export function deleteOwner(userId, ownerName, token) {
       return deletedOwner;
     } catch (error) {
       throw new Error('Unable to delete owner');
+    }
+  };
+}
+
+/**
+ * Update an owner listing from a user's account
+ * @param string unique user ID
+ * @param string the unique owner name
+ * @param string auth token from Clerk
+ * @returns updated owner if owner is successfuly deleted, else throws error
+ */
+export function updateOwner(userId, ownerName, token) {
+  return async () => {
+    try {
+      const deletedOwner = await Server.updateOwnerListing(userId, ownerName, token);
+      return deletedOwner;
+    } catch (error) {
+      throw new Error('Unable to update owner');
     }
   };
 }

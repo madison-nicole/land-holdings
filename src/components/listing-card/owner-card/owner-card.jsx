@@ -10,7 +10,41 @@ import {
 import { errorMsg } from '../../../utils/text-utils';
 import TotalHoldings from './total-holdings';
 
-function OwnerCard({ data, setData, onSave }) {
+function OwnerCard({
+  data, setData, onSave, onUpdate, editMode,
+}) {
+  function renderSaveButton() {
+    if (editMode) {
+      return (
+        <Button
+          _hover={{ bg: '#a1c1d2' }}
+          aria-label="save edited owner data"
+          bg="#bee3f8"
+          color="#06253f"
+          fontWeight={700}
+          marginTop="38.5px"
+          variant="outline"
+          onClick={onUpdate}
+        >UPDATE
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          _hover={{ bg: '#a1c1d2' }}
+          aria-label="save owner data"
+          bg="#bee3f8"
+          color="#06253f"
+          fontWeight={700}
+          marginTop="38.5px"
+          variant="outline"
+          onClick={onSave}
+        >SAVE
+        </Button>
+      );
+    }
+  }
+
   return (
     <CardBody
       alignItems="center"
@@ -80,17 +114,7 @@ function OwnerCard({ data, setData, onSave }) {
           </HStack>
         </form>
         <CardFooter>
-          <Button
-            _hover={{ bg: '#a1c1d2' }}
-            aria-label="save owner data"
-            bg="#bee3f8"
-            color="#06253f"
-            fontWeight={700}
-            marginTop="38.5px"
-            variant="outline"
-            onClick={onSave}
-          >SAVE
-          </Button>
+          {renderSaveButton()}
         </CardFooter>
       </VStack>
     </CardBody>

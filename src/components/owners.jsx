@@ -13,7 +13,9 @@ import { fetchOwners } from '../actions';
 import { alternateCardColor, alternateBgColor } from '../utils/style-utils';
 import OwnerField from './owner-field';
 
-function Owners({ userId, authToken, onDelete }) {
+function Owners({
+  userId, authToken, onDelete, onEdit,
+}) {
   const [expanded, setExpanded] = useState(null);
 
   // Loads data for the owners and land holdings using ReactQuery
@@ -120,6 +122,7 @@ function Owners({ userId, authToken, onDelete }) {
               margin={2}
               size="sm"
               variant="ghost"
+              onClick={() => onEdit(owner.ownerName)}
             />
             <IconButton
               aria-label="Delete owner information"
