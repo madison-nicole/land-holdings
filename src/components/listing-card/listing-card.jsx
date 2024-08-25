@@ -13,7 +13,7 @@ import { addOwner } from '../../actions';
 
 function ListingCard({
   onCloseListing, isOpen, userId, getToken, editMode,
-  ownerData, landData, setOwnerData, setLandData, updateOwnerData,
+  ownerData, landData, setOwnerData, setLandData, onUpdateOwner, ownerName,
 }) {
   const finalRef = useRef(null);
   const dispatch = useDispatch();
@@ -74,7 +74,7 @@ function ListingCard({
                   </TabList>
                   <TabPanels>
                     <TabPanel>
-                      <OwnerCard data={ownerData} editMode={editMode} setData={setOwnerData} onSave={saveOwnerData} onUpdate={updateOwnerData} />
+                      <OwnerCard data={ownerData} editMode={editMode} ownerName={ownerName} setData={setOwnerData} onSave={saveOwnerData} onUpdate={onUpdateOwner} />
                     </TabPanel>
                     <TabPanel>
                       <LandHoldingCard data={landData} setData={setLandData} />

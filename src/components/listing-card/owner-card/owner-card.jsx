@@ -11,7 +11,7 @@ import { errorMsg } from '../../../utils/text-utils';
 import TotalHoldings from './total-holdings';
 
 function OwnerCard({
-  data, setData, onSave, onUpdate, editMode,
+  data, setData, onSave, onUpdate, editMode, ownerName,
 }) {
   function renderSaveButton() {
     if (editMode) {
@@ -24,7 +24,7 @@ function OwnerCard({
           fontWeight={700}
           marginTop="38.5px"
           variant="outline"
-          onClick={onUpdate}
+          onClick={() => onUpdate(ownerName)}
         >UPDATE
         </Button>
       );

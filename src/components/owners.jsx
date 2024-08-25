@@ -12,6 +12,7 @@ import {
 import { fetchOwners } from '../actions';
 import { alternateCardColor, alternateBgColor } from '../utils/style-utils';
 import OwnerField from './owner-field';
+import OwnersSkeleton from './owners-skeleton';
 
 function Owners({
   userId, authToken, onDelete, onEdit,
@@ -20,9 +21,7 @@ function Owners({
 
   // Loads data for the owners and land holdings using ReactQuery
   const ownersQuery = useQuery({ queryKey: ['owners', userId], queryFn: fetchOwners(userId, authToken) });
-  const owners = ownersQuery?.data;
-
-  console.log('owners from reactquery', owners);
+  const { isLoading, isError, data } = ownersQuery;
 
   function toggleExpandOwner(idx) {
     // Switch the expanded mode
@@ -33,7 +32,11 @@ function Owners({
     }
   }
 
-  if (!owners) {
+  if (isLoading) {
+    return <OwnersSkeleton />;
+  }
+
+  if (!isLoading && !data) {
     return (
       <Text color="#06253f" fontSize="18px" textAlign="center">
         Click the add button to start adding owners!
@@ -41,8 +44,16 @@ function Owners({
     );
   }
 
+  if (isError) {
+    return (
+      <Text color="#06253f" fontSize="18px" textAlign="center">
+        There has been an error in fetching the data.
+      </Text>
+    );
+  }
+
   function renderOwners() {
-    const renderedOwners = owners?.map((owner, idx) => {
+    const renderedOwners = data?.map((owner, idx) => {
       return (
         <Card
           bg={alternateBgColor(idx)}

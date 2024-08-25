@@ -11,10 +11,8 @@ export function addOwner(userId, ownerData, token) {
   return async () => {
     try {
       const owner = await Server.saveOwner(userId, ownerData, token);
-      console.log('addOwner owner', owner);
       return owner;
     } catch (error) {
-      console.log(error);
       throw new Error('Unable to add owner');
     }
   };
@@ -84,11 +82,11 @@ export function deleteOwner(userId, ownerName, token) {
  * @param string auth token from Clerk
  * @returns updated owner if owner is successfuly deleted, else throws error
  */
-export function updateOwner(userId, ownerName, token) {
+export function updateOwner(userId, ownerName, ownerData, token) {
   return async () => {
     try {
-      const deletedOwner = await Server.updateOwnerListing(userId, ownerName, token);
-      return deletedOwner;
+      const updatedOwner = await Server.updateOwnerListing(userId, ownerName, ownerData, token);
+      return updatedOwner;
     } catch (error) {
       throw new Error('Unable to update owner');
     }

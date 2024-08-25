@@ -31,6 +31,7 @@ function Info() {
   const [ownerData, setOwnerData] = useState(emptyOwnerData);
   const [landData, setLandData] = useState(emptyLandData);
   const [editMode, setEditMode] = useState(false);
+  const [editOwnerName, setEditOwnerName] = useState('');
 
   useEffect(() => {
     async function returnToken() {
@@ -53,6 +54,7 @@ function Info() {
     setOwnerData(emptyOwnerData);
     setLandData(emptyLandData);
     setEditMode(false);
+    setEditOwnerName('');
   }, [onClose]);
 
   // Delete an owner entry
@@ -60,7 +62,7 @@ function Info() {
     // Get auth token
     const token = await getToken();
 
-    // Save the owner listing
+    // Delete the owner listing
     const deletedOwner = await dispatch(deleteOwner(userId, ownerName, token));
 
     // Display success toast
@@ -75,6 +77,7 @@ function Info() {
   // Edit an owner entry
   const onEditOwner = useCallback(async (ownerName) => {
     setEditMode(true);
+    setEditOwnerName(ownerName);
 
     // Get auth token
     const token = await getToken();
@@ -95,7 +98,7 @@ function Info() {
   }, [getToken, dispatch, userId, toast, openListingCard]);
 
   // Save an edited owner entry
-  const onSaveEditOwner = useCallback(async (ownerName) => {
+  const onUpdateOwner = useCallback(async (ownerName) => {
     // Get auth token
     const token = await getToken();
 
@@ -136,11 +139,12 @@ function Info() {
         isOpen={isOpen}
         landData={landData}
         ownerData={ownerData}
+        ownerName={editOwnerName}
         setLandData={setLandData}
         setOwnerData={setOwnerData}
-        updateOwnerData={onSaveEditOwner}
         userId={userId}
         onCloseListing={onCloseListing}
+        onUpdateOwner={onUpdateOwner}
       />
       <Tabs colorScheme="blue" variant="soft-rounded">
         <TabList display="flex" justifyContent="center" margin={10}>

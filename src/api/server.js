@@ -60,8 +60,6 @@ export async function deleteOwnerListing(userId, ownerName, token) {
  * @returns updated owner if update is successful
  */
 export async function updateOwnerListing(userId, ownerName, ownerData, token) {
-  const fields = { userId, ownerData };
-
-  const response = await axios.put(`${SERVER_URL}/${userId}/owners/${ownerName}`, fields, { headers: { Authorization: `Bearer ${token}` } });
+  const response = await axios.put(`${SERVER_URL}/${userId}/owners/${ownerName}`, ownerData, { headers: { Authorization: `Bearer ${token}` } });
   return response.data;
 }
