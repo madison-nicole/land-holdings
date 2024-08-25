@@ -5,17 +5,33 @@ import {
   HStack, NumberInput, NumberInputField,
   NumberInputStepper, NumberIncrementStepper,
   NumberDecrementStepper,
-  FormHelperText,
+  FormHelperText, Select,
   VStack, Button, CardFooter,
 } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import {
   errorMsg, nameHelper,
 } from '../../../utils/text-utils';
 import SectionName from './section-name';
+import { fetchOwners } from '../../../actions';
 
 function LandHoldingCard({
   data, setData, editMode, onSave,
+  userId, authToken,
 }) {
+  // Loads data for the owners and land holdings using ReactQuery
+  const ownersQuery = useQuery({ queryKey: ['owners', userId], queryFn: fetchOwners(userId, authToken) });
+  const owners = ownersQuery?.data;
+
+  function renderOwnerNameOptions() {
+    return owners?.map((owner) => {
+      const name = owner.ownerName;
+      return (
+        <option key={name + owner.totalHoldings} value={name}>{name}</option>
+      );
+    });
+  }
+
   function renderSaveButton() {
     if (editMode) {
       return (
@@ -66,9 +82,13 @@ function LandHoldingCard({
           </FormControl>
           <HStack marginTop="15px">
             <FormControl isRequired>
-              <FormLabel>Owner</FormLabel>
-              <Input type="text" value={data.ownerName} onChange={(e) => setData({ ...data, ownerName: e.target.value })} />
-              <FormErrorMessage>{errorMsg}</FormErrorMessage>
+              <FormLabel>Owner Name</FormLabel>
+              <Select
+                placeholder="Select Owner"
+                onChange={(e) => setData({ ...data, ownerName: e.target.value })}
+              >
+                {renderOwnerNameOptions()}
+              </Select>
             </FormControl>
             <FormControl isRequired>
               <FormLabel>Legal Entity</FormLabel>

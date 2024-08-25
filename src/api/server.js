@@ -37,6 +37,7 @@ export async function getOwners(userId, token) {
  */
 export async function getOwner(userId, ownerName, token) {
   const response = await axios.get(`${SERVER_URL}/${userId}/owners/${ownerName}`, { headers: { Authorization: `Bearer ${token}` } });
+  console.log('getOwner response.data', response.data);
   return response.data;
 }
 

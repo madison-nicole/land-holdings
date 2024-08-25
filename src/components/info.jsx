@@ -134,7 +134,9 @@ function Info() {
         >ADD
         </Button>
       </div>
-      <ListingCard editMode={editMode}
+      <ListingCard
+        authToken={authToken}
+        editMode={editMode}
         getToken={getToken}
         isOpen={isOpen}
         landData={landData}
@@ -156,7 +158,7 @@ function Info() {
             <Owners authToken={authToken} userId={userId} onDelete={onDeleteOwner} onEdit={onEditOwner} />
           </TabPanel>
           <TabPanel>
-            <LandHoldings getToken={getToken} userId={userId} />
+            <LandHoldings authToken={authToken} userId={userId} />
           </TabPanel>
         </TabPanels>
       </Tabs>

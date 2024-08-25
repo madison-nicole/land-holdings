@@ -11,10 +11,10 @@ import LandHoldingCard from './land-holding-card/land-holding-card';
 import {
   successAddOwnerToast, errorFormToast, errorAddOwnerToast, successAddLandToast, errorAddLandToast,
 } from '../../utils/toast-utils';
-import { addLandHolding, addOwner, fetchOwner } from '../../actions';
+import { addLandHolding, addOwner } from '../../actions';
 
 function ListingCard({
-  onCloseListing, isOpen, userId, getToken, editMode,
+  onCloseListing, isOpen, userId, getToken, editMode, authToken,
   ownerData, landData, setOwnerData, setLandData, onUpdateOwner, ownerName,
 }) {
   const finalRef = useRef(null);
@@ -52,38 +52,26 @@ function ListingCard({
   const saveLandData = useCallback(async () => {
     const token = await getToken();
 
-    let owner;
+    // Save the owner listing
+    const land = await dispatch(addLandHolding(userId, landData, token));
+    console.log('land', land);
 
-    try {
-      owner = await fetchOwner(userId, ownerName, token);
-      console.log('owner', owner);
-    } catch (error) {
-      // Display an error toast if owner does not exist
-      console.log('owner does not exist', error);
-      toast(errorAddLandToast);
-      return error;
-    }
-
-    try {
-      // Save the owner listing
-      const land = await dispatch(addLandHolding(userId, landData, token));
-      console.log('land', land);
+    if (land) {
       // Close the modal and clear the data, display success toast
       onCloseListing();
       toast(successAddLandToast);
-      return land;
-    } catch (error) {
+    } else {
       // Display an error toast if form was valid but save failed
       onCloseListing();
       toast(errorAddLandToast);
-      return error;
     }
+
     // // Check that all field requirements are met
     // if (!validForm) {
     //   // Display an error toast if form invalid
     //   toast(errorFormToast);
     // }
-  }, [getToken, userId, ownerName, dispatch, landData, toast, onCloseListing]);
+  }, [getToken, userId, dispatch, landData, toast, onCloseListing]);
 
   return (
     <div>
@@ -124,9 +112,12 @@ function ListingCard({
                     </TabPanel>
                     <TabPanel>
                       <LandHoldingCard
+                        authToken={authToken}
                         data={landData}
                         editMode={editMode}
+                        getToken={getToken}
                         setData={setLandData}
+                        userId={userId}
                         onSave={saveLandData}
                         // onUpdate={}
                       />
