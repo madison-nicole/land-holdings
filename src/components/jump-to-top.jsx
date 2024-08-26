@@ -37,6 +37,7 @@ function JumpToTop() {
           colorScheme="blue"
           icon={<ArrowUpIcon />}
           left="96%"
+          marginRight="15px"
           mb="20px"
           position="sticky"
           onClick={scrollToTop}

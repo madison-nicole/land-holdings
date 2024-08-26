@@ -78,6 +78,18 @@ export async function saveLandHolding(userId, ownerName, landData, token) {
 }
 
 /**
+ * Fetches an owner's land holdings
+ * @param string unique user ID
+ * @param string unique owner name
+ * @param string auth token from Clerk
+ * @returns array of user's saved owners
+ */
+export async function getOwnersLandHoldings(userId, ownerName, token) {
+  const response = await axios.get(`${SERVER_URL}/${userId}/owners/${ownerName}/land`, { headers: { Authorization: `Bearer ${token}` } });
+  return response.data;
+}
+
+/**
  * Deletes an owner
  * @param string unique user ID
  * @param string unique owner name

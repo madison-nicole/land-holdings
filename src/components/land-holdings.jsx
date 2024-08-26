@@ -47,17 +47,17 @@ function LandHoldings({
           color="#06253f"
           direction={{ base: 'column', sm: 'row' }}
           key={owner.ownerName}
-          mb="4px"
+          mb="10px"
           ml={40}
           mr={40}
           overflow="hidden"
-          width="600px"
+          width="623px"
         >
           <CardBody
             display="flex"
             flexDirection="row"
-            marginLeft="20px"
-            padding="0px"
+            // marginLeft="20px"
+            padding="10px"
           >
             <Flex direction="column">
               <Flex alignItems="space-between" direction="row" justifyContent="center" width="575px">
@@ -65,7 +65,7 @@ function LandHoldings({
                   alignItems="center"
                   cursor="pointer"
                   display="flex"
-                  fontSize={15}
+                  fontSize={16}
                   fontWeight="700"
                   mb="15px"
                   mt="15px"
@@ -105,8 +105,6 @@ function LandHoldings({
                 display="flex"
                 fontSize={15}
                 fontWeight="700"
-                mb="15px"
-                mt="15px"
                 width="100%"
               >
                 LAND HOLDINGS
@@ -116,7 +114,12 @@ function LandHoldings({
                 marginBottom="15px"
                 marginTop="15px"
               >
-                <LandHoldingFields land={owner.landHoldings} onDelete={onDeleteLand} />
+                <LandHoldingFields authToken={authToken}
+                  land={owner.landHoldings}
+                  ownerName={owner.ownerName}
+                  userId={userId}
+                  onDelete={onDeleteLand}
+                />
               </Flex>
             </Flex>
           </CardBody>

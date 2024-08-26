@@ -6,20 +6,31 @@ import {
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import OwnerField from './owner-field';
 
-function LandHoldingFields({ land, onDelete }) {
-  console.log('land', land);
+function LandHoldingFields({
+  land, onDelete, userId, ownerName, authToken,
+}) {
+//   const landQuery = useQuery({ queryKey: ['land', userId, ownerName], queryFn: fetchOwnersLandHoldings(userId, ownerName, authToken) });
+//   const ownersLand = landQuery?.data;
 
   if (!land) {
     return null;
   }
 
-  //   const arrayOfObjects = Object.values(obj);
-  const landHoldingsArray = Object.values(land);
+  const landArray = Object.values(land);
 
   function renderLandHoldings() {
-    return landHoldingsArray?.map((landHolding, idx) => {
+    return landArray?.map((landHolding, idx) => {
       return (
-        <Flex direction="column" key={landHolding.name + idx + landHolding.sectionName} mb="10px">
+        <Flex bgColor="#bee3f8"
+          border="solid"
+          borderColor="#06253f"
+          borderRadius={8}
+          direction="column"
+          key={landHolding.name + idx + landHolding.sectionName}
+          mb="10px"
+          padding="10px"
+
+        >
           <Flex alignItems="space-between" direction="row" justifyContent="center" width="575px">
             <Heading
               alignItems="center"

@@ -114,6 +114,26 @@ export function addLandHolding(userId, landData, token) {
 }
 
 /**
+ * Fetch the land holdings of an owner
+ * @param string unique user ID
+ * @param string unique owner name
+ * @param string auth token from Clerk
+ * @returns holdings if they are successfuly fetched, else throws error
+ */
+export function fetchOwnersLandHoldings(userId, ownerName, token) {
+  return async () => {
+    try {
+      const landHoldings = await Server.getOwnersLandHoldings(userId, ownerName, token);
+      return landHoldings;
+    } catch (error) {
+      // For now, if we get an error, just log it.
+      // Add error handling later
+      throw new Error('Unable to fetch land holdings of that owner');
+    }
+  };
+}
+
+/**
  * Delete a land holding from an owner
  * @param string unique user ID
  * @param string the unique owner name
