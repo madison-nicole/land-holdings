@@ -11,7 +11,7 @@ import LandHoldingFields from './land-holding-fields';
 import OwnersSkeleton from './owners-skeleton';
 
 function LandHoldings({
-  userId, authToken, onEditOwner, onDeleteOwner, onDeleteLand,
+  userId, authToken, onEditOwner, onDeleteOwner, onDeleteLand, onEditLand,
 }) {
   // Loads data for the owners and land holdings using ReactQuery
   const ownersQuery = useQuery({ queryKey: ['owners', userId], queryFn: fetchOwners(userId, authToken) });
@@ -56,7 +56,6 @@ function LandHoldings({
           <CardBody
             display="flex"
             flexDirection="row"
-            // marginLeft="20px"
             padding="10px"
           >
             <Flex direction="column">
@@ -119,6 +118,7 @@ function LandHoldings({
                   ownerName={owner.ownerName}
                   userId={userId}
                   onDelete={onDeleteLand}
+                  onEdit={onEditLand}
                 />
               </Flex>
             </Flex>

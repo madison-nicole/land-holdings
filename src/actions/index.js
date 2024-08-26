@@ -151,3 +151,22 @@ export function deleteLandHolding(userId, ownerName, landName, token) {
     }
   };
 }
+
+/**
+ * Fetch one owner listing saved on a user's account
+ * @param string unique user ID
+ * @param string unique owner name
+ * @param string unique land name
+ * @param string auth token from Clerk
+ * @returns owner if owner is successfuly fetched, else throws error
+ */
+export function fetchLandHolding(userId, ownerName, landName, token) {
+  return async () => {
+    try {
+      const land = await Server.getLandHolding(userId, ownerName, landName, token);
+      return land;
+    } catch (error) {
+      throw new Error('Unable to fetch land holding');
+    }
+  };
+}

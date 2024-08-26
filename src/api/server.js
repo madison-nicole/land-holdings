@@ -90,7 +90,7 @@ export async function getOwnersLandHoldings(userId, ownerName, token) {
 }
 
 /**
- * Deletes an owner
+ * Deletes a land holding from an owner
  * @param string unique user ID
  * @param string unique owner name
  * @param string unique land holding name
@@ -99,5 +99,18 @@ export async function getOwnersLandHoldings(userId, ownerName, token) {
  */
 export async function deleteLandListing(userId, ownerName, landName, token) {
   const response = await axios.delete(`${SERVER_URL}/${userId}/owners/${ownerName}/land/${landName}`, { headers: { Authorization: `Bearer ${token}` } });
+  return response.data;
+}
+
+/**
+ * Fetches a land holding from an owner
+ * @param string unique user ID
+ * @param string unique owner name
+ * @param string unique land holding name
+ * @param string auth token from Clerk
+ * @returns fetched land holding if fetch is successful
+ */
+export async function getLandHolding(userId, ownerName, landName, token) {
+  const response = await axios.get(`${SERVER_URL}/${userId}/owners/${ownerName}/land/${landName}`, { headers: { Authorization: `Bearer ${token}` } });
   return response.data;
 }

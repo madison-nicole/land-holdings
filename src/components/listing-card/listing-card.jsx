@@ -16,6 +16,7 @@ import { addLandHolding, addOwner } from '../../actions';
 function ListingCard({
   onCloseListing, isOpen, userId, getToken, editMode, authToken,
   ownerData, landData, setOwnerData, setLandData, onUpdateOwner, ownerName,
+  tabIndex, setTabIndex,
 }) {
   const finalRef = useRef(null);
   const dispatch = useDispatch();
@@ -88,7 +89,12 @@ function ListingCard({
             >
               <ModalCloseButton />
               <Flex alignItems="center" direction="column">
-                <Tabs colorScheme="blue" marginTop="30px" variant="soft-rounded">
+                <Tabs colorScheme="blue"
+                  index={tabIndex}
+                  marginTop="30px"
+                  variant="soft-rounded"
+                  onChange={(index) => setTabIndex(index)}
+                >
                   <TabList marginLeft="200px">
                     <Tab>OWNER</Tab>
                     <Tab>LAND HOLDING</Tab>

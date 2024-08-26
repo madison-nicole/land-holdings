@@ -7,7 +7,7 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import OwnerField from './owner-field';
 
 function LandHoldingFields({
-  land, onDelete, userId, ownerName, authToken,
+  land, onDelete, onEdit,
 }) {
 //   const landQuery = useQuery({ queryKey: ['land', userId, ownerName], queryFn: fetchOwnersLandHoldings(userId, ownerName, authToken) });
 //   const ownersLand = landQuery?.data;
@@ -49,7 +49,7 @@ function LandHoldingFields({
               margin={0}
               size="xs"
               variant="ghost"
-            //   onClick={() => onEditOwner(owner.ownerName)}
+              onClick={() => onEdit(landHolding.ownerName, landHolding.name)}
             />
             <IconButton
               aria-label="Delete owner information"

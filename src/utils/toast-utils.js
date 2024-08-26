@@ -84,3 +84,10 @@ export const errorDeleteLandToast = {
   duration: 3000,
   isClosable: true,
 };
+
+export const errorFetchLandToast = {
+  title: 'Failed to fetch the land holding data',
+  status: 'error',
+  duration: 3000,
+  isClosable: true,
+};

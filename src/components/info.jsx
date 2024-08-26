@@ -14,12 +14,14 @@ import JumpToTop from './jump-to-top';
 import ListingCard from './listing-card/listing-card';
 import {
   deleteOwner, fetchOwner, updateOwner, deleteLandHolding,
+  fetchLandHolding,
 } from '../actions';
 import {
   errorDeleteToast, errorFetchOwnerToast, successDeleteToast,
   errorUpdateOwnerToast, successUpdateOwnerToast,
   successDeleteLandToast,
   errorDeleteLandToast,
+  errorFetchLandToast,
 } from '../utils/toast-utils';
 import { emptyOwnerData, emptyLandData } from '../utils/listing-utils';
 
@@ -36,6 +38,7 @@ function Info() {
   const [landData, setLandData] = useState(emptyLandData);
   const [editMode, setEditMode] = useState(false);
   const [editOwnerName, setEditOwnerName] = useState('');
+  const [modalTabIndex, setModalTabIndex] = useState(0);
 
   useEffect(() => {
     async function returnToken() {
@@ -59,6 +62,7 @@ function Info() {
     setLandData(emptyLandData);
     setEditMode(false);
     setEditOwnerName('');
+    setModalTabIndex(0);
   }, [onClose]);
 
   // Delete an owner entry
@@ -112,7 +116,32 @@ function Info() {
     } else {
       // Set owner data to current
       setOwnerData(fetchedOwnerData);
+      // Set to correct tab
+      setModalTabIndex(0);
+      // Open listing card with owner info
+      openListingCard();
+    }
+  }, [getToken, dispatch, userId, toast, openListingCard]);
 
+  // Edit an owner entry
+  const onEditLand = useCallback(async (ownerName, landName) => {
+    setEditMode(true);
+    setEditOwnerName(ownerName);
+
+    // Get auth token
+    const token = await getToken();
+
+    // Get owner data
+    const fetchedLandData = await dispatch(fetchLandHolding(userId, ownerName, landName, token));
+
+    // If fetch owner fails
+    if (!fetchedLandData) {
+      toast(errorFetchLandToast);
+    } else {
+      // Set land data to current
+      setLandData(fetchedLandData);
+      // Set to correct tab
+      setModalTabIndex(1);
       // Open listing card with owner info
       openListingCard();
     }
@@ -165,6 +194,8 @@ function Info() {
         ownerName={editOwnerName}
         setLandData={setLandData}
         setOwnerData={setOwnerData}
+        setTabIndex={setModalTabIndex}
+        tabIndex={modalTabIndex}
         userId={userId}
         onCloseListing={onCloseListing}
         onUpdateOwner={onUpdateOwner}
@@ -184,6 +215,7 @@ function Info() {
               userId={userId}
               onDeleteLand={onDeleteLand}
               onDeleteOwner={onDeleteOwner}
+              onEditLand={onEditLand}
               onEditOwner={onEditOwner}
             />
           </TabPanel>
