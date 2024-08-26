@@ -76,3 +76,16 @@ export async function saveLandHolding(userId, ownerName, landData, token) {
   const response = await axios.post(`${SERVER_URL}/${userId}/owners/${ownerName}/land`, landData, { headers: { Authorization: `Bearer ${token}` } });
   return response.data;
 }
+
+/**
+ * Deletes an owner
+ * @param string unique user ID
+ * @param string unique owner name
+ * @param string unique land holding name
+ * @param string auth token from Clerk
+ * @returns deleted land holding if deletion is successful
+ */
+export async function deleteLandListing(userId, ownerName, landName, token) {
+  const response = await axios.delete(`${SERVER_URL}/${userId}/owners/${ownerName}/land/${landName}`, { headers: { Authorization: `Bearer ${token}` } });
+  return response.data;
+}

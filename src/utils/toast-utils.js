@@ -70,3 +70,17 @@ export const errorAddLandToast = {
   duration: 3000,
   isClosable: true,
 };
+
+export const successDeleteLandToast = {
+  title: 'Land holding successfully deleted.',
+  status: 'success',
+  duration: 3000,
+  isClosable: true,
+};
+
+export const errorDeleteLandToast = {
+  title: 'Failed to delete land holding.',
+  status: 'error',
+  duration: 3000,
+  isClosable: true,
+};

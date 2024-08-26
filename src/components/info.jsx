@@ -12,10 +12,14 @@ import Owners from './owners';
 import LandHoldings from './land-holdings';
 import JumpToTop from './jump-to-top';
 import ListingCard from './listing-card/listing-card';
-import { deleteOwner, fetchOwner, updateOwner } from '../actions';
+import {
+  deleteOwner, fetchOwner, updateOwner, deleteLandHolding,
+} from '../actions';
 import {
   errorDeleteToast, errorFetchOwnerToast, successDeleteToast,
   errorUpdateOwnerToast, successUpdateOwnerToast,
+  successDeleteLandToast,
+  errorDeleteLandToast,
 } from '../utils/toast-utils';
 import { emptyOwnerData, emptyLandData } from '../utils/listing-utils';
 
@@ -71,6 +75,23 @@ function Info() {
     } else {
       // Display an error toast
       toast(errorDeleteToast);
+    }
+  }, [getToken, dispatch, userId, toast]);
+
+  // Delete a land holding
+  const onDeleteLand = useCallback(async (ownerName, landName) => {
+    // Get auth token
+    const token = await getToken();
+
+    // Delete the owner listing
+    const deletedLand = await dispatch(deleteLandHolding(userId, ownerName, landName, token));
+
+    // Display success toast
+    if (deletedLand) {
+      toast(successDeleteLandToast);
+    } else {
+      // Display an error toast
+      toast(errorDeleteLandToast);
     }
   }, [getToken, dispatch, userId, toast]);
 
@@ -161,6 +182,7 @@ function Info() {
             <LandHoldings
               authToken={authToken}
               userId={userId}
+              onDeleteLand={onDeleteLand}
               onDeleteOwner={onDeleteOwner}
               onEditOwner={onEditOwner}
             />

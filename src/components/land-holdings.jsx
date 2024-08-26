@@ -2,21 +2,23 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
   Text, Card, CardBody, Flex, Heading,
-  HStack, IconButton,
+  IconButton,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import { fetchOwners } from '../actions';
-import OwnerField from './owner-field';
+import OwnerFields from './owner-fields';
+import LandHoldingFields from './land-holding-fields';
+import OwnersSkeleton from './owners-skeleton';
 
 function LandHoldings({
-  userId, authToken, onEditOwner, onDeleteOwner,
+  userId, authToken, onEditOwner, onDeleteOwner, onDeleteLand,
 }) {
   // Loads data for the owners and land holdings using ReactQuery
   const ownersQuery = useQuery({ queryKey: ['owners', userId], queryFn: fetchOwners(userId, authToken) });
   const { isLoading, isError, data } = ownersQuery;
 
   if (isLoading) {
-    // return <OwnersSkeleton />;
+    return <OwnersSkeleton />;
   }
 
   if (!isLoading && !data) {
@@ -95,18 +97,26 @@ function LandHoldings({
                 marginBottom="15px"
                 marginTop="15px"
               >
-                <OwnerField field="Entity Type: " info={owner.entityType} />
-                <OwnerField field="Owner Type: " info={owner.ownerType} />
-                <OwnerField field="Address: " info={owner.address} />
-                <OwnerField field="Total Holdings: " info={owner.totalHoldings} />
-                <HStack>
-                  <OwnerField field="Class A:" info={owner.classA} />
-                  <OwnerField field="Class B:" info={owner.classB} />
-                  <OwnerField field="Class C:" info={owner.classC} />
-                  <OwnerField field="Class D:" info={owner.classD} />
-                </HStack>
-                <OwnerField field="Unique Legal Entities: " info={owner.legalEntities} />
-                <OwnerField field="Total Net Mineral Acres: " info={owner.mineralAcres} />
+                <OwnerFields owner={owner} />
+              </Flex>
+              <Heading
+                alignItems="center"
+                cursor="pointer"
+                display="flex"
+                fontSize={15}
+                fontWeight="700"
+                mb="15px"
+                mt="15px"
+                width="100%"
+              >
+                LAND HOLDINGS
+              </Heading>
+              <Flex
+                direction="column"
+                marginBottom="15px"
+                marginTop="15px"
+              >
+                <LandHoldingFields land={owner.landHoldings} onDelete={onDeleteLand} />
               </Flex>
             </Flex>
           </CardBody>

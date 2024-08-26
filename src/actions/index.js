@@ -112,3 +112,22 @@ export function addLandHolding(userId, landData, token) {
     }
   };
 }
+
+/**
+ * Delete a land holding from an owner
+ * @param string unique user ID
+ * @param string the unique owner name
+ * @param string the unique land holding name
+ * @param string auth token from Clerk
+ * @returns deleted holding if it is successfuly deleted, else throws error
+ */
+export function deleteLandHolding(userId, ownerName, landName, token) {
+  return async () => {
+    try {
+      const deletedLand = await Server.deleteLandListing(userId, ownerName, landName, token);
+      return deletedLand;
+    } catch (error) {
+      throw new Error('Unable to delete land holding');
+    }
+  };
+}
