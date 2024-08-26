@@ -158,7 +158,12 @@ function Info() {
             <Owners authToken={authToken} userId={userId} onDelete={onDeleteOwner} onEdit={onEditOwner} />
           </TabPanel>
           <TabPanel>
-            <LandHoldings authToken={authToken} userId={userId} />
+            <LandHoldings
+              authToken={authToken}
+              userId={userId}
+              onDeleteOwner={onDeleteOwner}
+              onEditOwner={onEditOwner}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

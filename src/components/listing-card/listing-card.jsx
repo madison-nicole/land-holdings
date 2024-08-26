@@ -65,12 +65,6 @@ function ListingCard({
       onCloseListing();
       toast(errorAddLandToast);
     }
-
-    // // Check that all field requirements are met
-    // if (!validForm) {
-    //   // Display an error toast if form invalid
-    //   toast(errorFormToast);
-    // }
   }, [getToken, userId, dispatch, landData, toast, onCloseListing]);
 
   return (

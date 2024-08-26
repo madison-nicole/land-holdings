@@ -48,7 +48,6 @@ export function fetchOwner(userId, ownerName, token) {
   return async () => {
     try {
       const owner = await Server.getOwner(userId, ownerName, token);
-      console.log('index owner', owner);
       return owner;
     } catch (error) {
       // For now, if we get an error, just log it.
