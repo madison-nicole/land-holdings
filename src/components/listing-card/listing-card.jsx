@@ -84,6 +84,7 @@ function ListingCard({
             <Card
               alignItems="center"
               bg="#04192b"
+              color="white"
               display="flex"
               flexDirection="column"
               height="780px"

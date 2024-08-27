@@ -48,6 +48,7 @@ function OwnerCard({
   return (
     <CardBody
       alignItems="center"
+      color="white"
       display="flex"
       flexDir="column"
       justifyContent="flex-start"
