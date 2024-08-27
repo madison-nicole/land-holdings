@@ -15,6 +15,7 @@ import ListingCard from './listing-card/listing-card';
 import {
   deleteOwner, fetchOwner, updateOwner, deleteLandHolding,
   fetchLandHolding,
+  updateLandHolding,
 } from '../actions';
 import {
   errorDeleteToast, errorFetchOwnerToast, successDeleteToast,
@@ -22,6 +23,8 @@ import {
   successDeleteLandToast,
   errorDeleteLandToast,
   errorFetchLandToast,
+  successUpdateLandToast,
+  errorUpdateLandToast,
 } from '../utils/toast-utils';
 import { emptyOwnerData, emptyLandData } from '../utils/listing-utils';
 
@@ -157,7 +160,6 @@ function Info() {
 
     // Display success toast
     if (updatedOwner) {
-      console.log('updatedOwner', updatedOwner);
       toast(successUpdateOwnerToast);
     } else {
       // Display an error toast
@@ -167,6 +169,27 @@ function Info() {
     // Close the listing card and clear the data
     onCloseListing();
   }, [dispatch, getToken, onCloseListing, ownerData, toast, userId]);
+
+  // Save an edited land holding entry
+  const onUpdateLand = useCallback(async (ownerName, landName) => {
+    // Get auth token
+    const token = await getToken();
+
+    // Save the land holding
+    const updatedLand = await dispatch(updateLandHolding(userId, ownerName, landName, landData, token));
+
+    // Display success toast
+    if (updatedLand) {
+      console.log('updatedLand', updatedLand);
+      toast(successUpdateLandToast);
+    } else {
+      // Display an error toast
+      toast(errorUpdateLandToast);
+    }
+
+    // Close the listing card and clear the data
+    onCloseListing();
+  }, [dispatch, getToken, landData, onCloseListing, toast, userId]);
 
   return (
     <Flex alignItems="center" direction="column">
@@ -217,6 +240,7 @@ function Info() {
               onDeleteOwner={onDeleteOwner}
               onEditLand={onEditLand}
               onEditOwner={onEditOwner}
+              onUpdateLand={onUpdateLand}
             />
           </TabPanel>
         </TabPanels>

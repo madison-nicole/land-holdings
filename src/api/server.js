@@ -114,3 +114,17 @@ export async function getLandHolding(userId, ownerName, landName, token) {
   const response = await axios.get(`${SERVER_URL}/${userId}/owners/${ownerName}/land/${landName}`, { headers: { Authorization: `Bearer ${token}` } });
   return response.data;
 }
+
+/**
+ * Updates a land holding
+ * @param string unique user ID
+ * @param string unique owner name
+ * @param string unique land name
+ * @param object land holding data
+ * @param string auth token from Clerk
+ * @returns updated owner if update is successful
+ */
+export async function updateLandListing(userId, ownerName, landName, landData, token) {
+  const response = await axios.put(`${SERVER_URL}/${userId}/owners/${ownerName}/land/${landName}`, landData, { headers: { Authorization: `Bearer ${token}` } });
+  return response.data;
+}

@@ -80,7 +80,7 @@ export function deleteOwner(userId, ownerName, token) {
  * @param string unique user ID
  * @param string the unique owner name
  * @param string auth token from Clerk
- * @returns updated owner if owner is successfuly deleted, else throws error
+ * @returns updated owner if owner is successfuly saved, else throws error
  */
 export function updateOwner(userId, ownerName, ownerData, token) {
   return async () => {
@@ -167,6 +167,25 @@ export function fetchLandHolding(userId, ownerName, landName, token) {
       return land;
     } catch (error) {
       throw new Error('Unable to fetch land holding');
+    }
+  };
+}
+
+/**
+ * Update a land holding from a user's account
+ * @param string unique user ID
+ * @param string the unique owner name
+ * @param object the land holding data
+ * @param string auth token from Clerk
+ * @returns updated land if it is successfuly saved, else throws error
+ */
+export function updateLandHolding(userId, ownerName, landName, landData, token) {
+  return async () => {
+    try {
+      const updatedLand = await Server.updateLandListing(userId, ownerName, landName, landData, token);
+      return updatedLand;
+    } catch (error) {
+      throw new Error('Unable to update land holding');
     }
   };
 }

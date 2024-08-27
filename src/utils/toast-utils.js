@@ -91,3 +91,17 @@ export const errorFetchLandToast = {
   duration: 3000,
   isClosable: true,
 };
+
+export const successUpdateLandToast = {
+  title: 'Land holding successfully updated.',
+  status: 'success',
+  duration: 3000,
+  isClosable: true,
+};
+
+export const errorUpdateLandToast = {
+  title: 'Failed to update land holding',
+  status: 'error',
+  duration: 3000,
+  isClosable: true,
+};
