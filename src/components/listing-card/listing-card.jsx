@@ -16,7 +16,7 @@ import { addLandHolding, addOwner } from '../../actions';
 function ListingCard({
   onCloseListing, isOpen, userId, getToken, editMode, authToken,
   ownerData, landData, setOwnerData, setLandData, onUpdateOwner, ownerName,
-  tabIndex, setTabIndex,
+  tabIndex, setTabIndex, onUpdateLand,
 }) {
   const finalRef = useRef(null);
   const dispatch = useDispatch();
@@ -119,7 +119,7 @@ function ListingCard({
                         setData={setLandData}
                         userId={userId}
                         onSave={saveLandData}
-                        // onUpdate={}
+                        onUpdateLand={onUpdateLand}
                       />
                     </TabPanel>
                   </TabPanels>

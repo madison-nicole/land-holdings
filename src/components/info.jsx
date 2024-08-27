@@ -171,16 +171,17 @@ function Info() {
   }, [dispatch, getToken, onCloseListing, ownerData, toast, userId]);
 
   // Save an edited land holding entry
-  const onUpdateLand = useCallback(async (ownerName, landName) => {
+  const onUpdateLand = useCallback(async () => {
     // Get auth token
     const token = await getToken();
 
+    const { ownerName, name } = landData;
+
     // Save the land holding
-    const updatedLand = await dispatch(updateLandHolding(userId, ownerName, landName, landData, token));
+    const updatedLand = await dispatch(updateLandHolding(userId, ownerName, name, landData, token));
 
     // Display success toast
     if (updatedLand) {
-      console.log('updatedLand', updatedLand);
       toast(successUpdateLandToast);
     } else {
       // Display an error toast
@@ -221,6 +222,7 @@ function Info() {
         tabIndex={modalTabIndex}
         userId={userId}
         onCloseListing={onCloseListing}
+        onUpdateLand={onUpdateLand}
         onUpdateOwner={onUpdateOwner}
       />
       <Tabs colorScheme="blue" variant="soft-rounded">
@@ -240,7 +242,6 @@ function Info() {
               onDeleteOwner={onDeleteOwner}
               onEditLand={onEditLand}
               onEditOwner={onEditOwner}
-              onUpdateLand={onUpdateLand}
             />
           </TabPanel>
         </TabPanels>

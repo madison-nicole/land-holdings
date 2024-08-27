@@ -17,7 +17,7 @@ import { fetchOwners } from '../../../actions';
 
 function LandHoldingCard({
   data, setData, editMode, onSave,
-  userId, authToken,
+  userId, authToken, onUpdateLand,
 }) {
   // Loads data for the owners and land holdings using ReactQuery
   const ownersQuery = useQuery({ queryKey: ['owners', userId], queryFn: fetchOwners(userId, authToken) });
@@ -43,7 +43,7 @@ function LandHoldingCard({
           fontWeight={700}
           type="submit"
           variant="outline"
-          // onClick={onUpdate}
+          onClick={onUpdateLand}
         >UPDATE
         </Button>
       );
