@@ -6,6 +6,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
+import { useQueryClient } from '@tanstack/react-query';
 import OwnerCard from './owner-card/owner-card';
 import LandHoldingCard from './land-holding-card/land-holding-card';
 import {
@@ -21,7 +22,7 @@ function ListingCard({
   const finalRef = useRef(null);
   const dispatch = useDispatch();
   const toast = useToast();
-
+  const queryClient = useQueryClient;
   const validForm = true;
 
   // Save the owner entry
@@ -39,6 +40,7 @@ function ListingCard({
       if (owner) {
         // Display success toast
         toast(successAddOwnerToast);
+        queryClient.invalidateQueries({ queryKey: ['owners', userId] });
       } else {
         // Display an error toast if form was valid but save failed
         toast(errorAddOwnerToast);
@@ -47,7 +49,7 @@ function ListingCard({
       // Display an error toast if form invalid
       toast(errorFormToast);
     }
-  }, [validForm, getToken, dispatch, userId, ownerData, onCloseListing, toast]);
+  }, [validForm, getToken, dispatch, userId, ownerData, queryClient, onCloseListing, toast]);
 
   // Save the owner entry
   const saveLandData = useCallback(async () => {
@@ -55,18 +57,18 @@ function ListingCard({
 
     // Save the owner listing
     const land = await dispatch(addLandHolding(userId, landData, token));
-    console.log('land', land);
 
     if (land) {
       // Close the modal and clear the data, display success toast
       onCloseListing();
       toast(successAddLandToast);
+      queryClient.invalidateQueries({ queryKey: ['owners', userId] });
     } else {
       // Display an error toast if form was valid but save failed
       onCloseListing();
       toast(errorAddLandToast);
     }
-  }, [getToken, userId, dispatch, landData, toast, onCloseListing]);
+  }, [getToken, dispatch, userId, landData, queryClient, onCloseListing, toast]);
 
   return (
     <div>

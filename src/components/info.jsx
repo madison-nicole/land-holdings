@@ -8,6 +8,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { useUser, useAuth } from '@clerk/clerk-react';
 import { useDispatch } from 'react-redux';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Owners from './owners';
 import LandHoldings from './land-holdings';
 import JumpToTop from './jump-to-top';
@@ -16,6 +17,7 @@ import {
   deleteOwner, fetchOwner, updateOwner, deleteLandHolding,
   fetchLandHolding,
   updateLandHolding,
+  fetchOwners,
 } from '../actions';
 import {
   errorDeleteToast, errorFetchOwnerToast, successDeleteToast,
@@ -42,6 +44,7 @@ function Info() {
   const [editMode, setEditMode] = useState(false);
   const [editOwnerName, setEditOwnerName] = useState('');
   const [modalTabIndex, setModalTabIndex] = useState(0);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     async function returnToken() {
@@ -51,6 +54,9 @@ function Info() {
 
     setAuthToken(returnToken());
   }, [getToken]);
+
+  // Loads data for the owners and land holdings using ReactQuery
+  const ownersQuery = useQuery({ queryKey: ['owners', userId], queryFn: fetchOwners(userId, authToken) });
 
   const openListingCard = useCallback(async () => {
     onOpen();
@@ -75,6 +81,7 @@ function Info() {
 
     // Delete the owner listing
     const deletedOwner = await dispatch(deleteOwner(userId, ownerName, token));
+    queryClient.invalidateQueries({ queryKey: ['owners', userId] });
 
     // Display success toast
     if (deletedOwner) {
@@ -83,15 +90,15 @@ function Info() {
       // Display an error toast
       toast(errorDeleteToast);
     }
-  }, [getToken, dispatch, userId, toast]);
+  }, [getToken, dispatch, userId, queryClient, toast]);
 
   // Delete a land holding
   const onDeleteLand = useCallback(async (ownerName, landName) => {
     // Get auth token
     const token = await getToken();
 
-    // Delete the owner listing
     const deletedLand = await dispatch(deleteLandHolding(userId, ownerName, landName, token));
+    queryClient.invalidateQueries({ queryKey: ['owners', userId] });
 
     // Display success toast
     if (deletedLand) {
@@ -100,7 +107,7 @@ function Info() {
       // Display an error toast
       toast(errorDeleteLandToast);
     }
-  }, [getToken, dispatch, userId, toast]);
+  }, [getToken, dispatch, userId, queryClient, toast]);
 
   // Edit an owner entry
   const onEditOwner = useCallback(async (ownerName) => {
@@ -112,6 +119,7 @@ function Info() {
 
     // Get owner data
     const fetchedOwnerData = await dispatch(fetchOwner(userId, ownerName, token));
+    queryClient.invalidateQueries({ queryKey: ['owners', userId] });
 
     // If fetch owner fails
     if (!fetchedOwnerData) {
@@ -124,7 +132,7 @@ function Info() {
       // Open listing card with owner info
       openListingCard();
     }
-  }, [getToken, dispatch, userId, toast, openListingCard]);
+  }, [getToken, dispatch, userId, queryClient, toast, openListingCard]);
 
   // Edit an owner entry
   const onEditLand = useCallback(async (ownerName, landName) => {
@@ -136,6 +144,7 @@ function Info() {
 
     // Get owner data
     const fetchedLandData = await dispatch(fetchLandHolding(userId, ownerName, landName, token));
+    queryClient.invalidateQueries({ queryKey: ['owners', userId] });
 
     // If fetch owner fails
     if (!fetchedLandData) {
@@ -148,7 +157,7 @@ function Info() {
       // Open listing card with owner info
       openListingCard();
     }
-  }, [getToken, dispatch, userId, toast, openListingCard]);
+  }, [getToken, dispatch, userId, queryClient, toast, openListingCard]);
 
   // Save an edited owner entry
   const onUpdateOwner = useCallback(async (ownerName) => {
@@ -157,6 +166,7 @@ function Info() {
 
     // Save the owner listing
     const updatedOwner = await dispatch(updateOwner(userId, ownerName, ownerData, token));
+    queryClient.invalidateQueries({ queryKey: ['owners', userId] });
 
     // Display success toast
     if (updatedOwner) {
@@ -168,7 +178,7 @@ function Info() {
 
     // Close the listing card and clear the data
     onCloseListing();
-  }, [dispatch, getToken, onCloseListing, ownerData, toast, userId]);
+  }, [dispatch, getToken, onCloseListing, ownerData, queryClient, toast, userId]);
 
   // Save an edited land holding entry
   const onUpdateLand = useCallback(async () => {
@@ -179,6 +189,7 @@ function Info() {
 
     // Save the land holding
     const updatedLand = await dispatch(updateLandHolding(userId, ownerName, name, landData, token));
+    queryClient.invalidateQueries({ queryKey: ['owners', userId] });
 
     // Display success toast
     if (updatedLand) {
@@ -190,7 +201,7 @@ function Info() {
 
     // Close the listing card and clear the data
     onCloseListing();
-  }, [dispatch, getToken, landData, onCloseListing, toast, userId]);
+  }, [dispatch, getToken, landData, onCloseListing, queryClient, toast, userId]);
 
   return (
     <Flex alignItems="center" direction="column">
@@ -216,6 +227,7 @@ function Info() {
         landData={landData}
         ownerData={ownerData}
         ownerName={editOwnerName}
+        ownersQuery={ownersQuery}
         setLandData={setLandData}
         setOwnerData={setOwnerData}
         setTabIndex={setModalTabIndex}

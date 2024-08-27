@@ -44,7 +44,7 @@ function SectionName({ data, setData }) {
             type="text"
             value={data.section}
             width="75px"
-            onChange={(e) => setData({ ...data, section: (e.target.value).toUpperCase(), sectionName: `${data.section}-${data.township}-${data.range}` })}
+            onChange={(e) => setData({ ...data, section: (e.target.value).toUpperCase(), sectionName: `${(e.target.value).toUpperCase()}-${data.township}-${data.range}` })}
           />
           <FormErrorMessage>{sectionError}</FormErrorMessage>
           <FormHelperText fontSize={10}>{sectionHelper}</FormHelperText>
@@ -58,7 +58,7 @@ function SectionName({ data, setData }) {
             type="text"
             value={data.township}
             width="95px"
-            onChange={(e) => setData({ ...data, township: (e.target.value).toUpperCase(), sectionName: `${data.section}-${data.township}-${data.range}` })}
+            onChange={(e) => setData({ ...data, township: (e.target.value).toUpperCase(), sectionName: `${data.section}-${(e.target.value).toUpperCase()}-${data.range}` })}
           />
           <FormErrorMessage>{townshipError}</FormErrorMessage>
           <FormHelperText fontSize={10}>{townshipHelper}</FormHelperText>
@@ -72,7 +72,7 @@ function SectionName({ data, setData }) {
             type="text"
             value={data.range}
             width="95px"
-            onChange={(e) => setData({ ...data, range: (e.target.value).toUpperCase(), sectionName: `${data.section}-${data.township}-${data.range}` })}
+            onChange={(e) => setData({ ...data, range: (e.target.value).toUpperCase(), sectionName: `${data.section}-${data.township}-${(e.target.value).toUpperCase()}` })}
           />
           <FormErrorMessage>{rangeError}</FormErrorMessage>
           <FormHelperText fontSize={10}>{rangeHelper}</FormHelperText>

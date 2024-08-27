@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // API url
-export const SERVER_URL = 'http://localhost:9090/api';
+// export const SERVER_URL = 'http://localhost:9090/api';
+export const SERVER_URL = 'https://land-holdings-api.onrender.com/api';
 
 /**
  * Save an owner listing to a user's account
