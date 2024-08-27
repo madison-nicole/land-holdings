@@ -47,7 +47,7 @@ function SectionName({ data, setData }) {
             onChange={(e) => setData({ ...data, section: (e.target.value).toUpperCase(), sectionName: `${(e.target.value).toUpperCase()}-${data.township}-${data.range}` })}
           />
           <FormErrorMessage>{sectionError}</FormErrorMessage>
-          <FormHelperText fontSize={10}>{sectionHelper}</FormHelperText>
+          <FormHelperText color="white" fontSize={10}>{sectionHelper}</FormHelperText>
         </FormControl>
         <FormControl isRequired>
           <FormLabel>Township</FormLabel>
@@ -61,7 +61,7 @@ function SectionName({ data, setData }) {
             onChange={(e) => setData({ ...data, township: (e.target.value).toUpperCase(), sectionName: `${data.section}-${(e.target.value).toUpperCase()}-${data.range}` })}
           />
           <FormErrorMessage>{townshipError}</FormErrorMessage>
-          <FormHelperText fontSize={10}>{townshipHelper}</FormHelperText>
+          <FormHelperText color="white" fontSize={10}>{townshipHelper}</FormHelperText>
         </FormControl>
         <FormControl isRequired>
           <FormLabel>Range</FormLabel>
@@ -75,7 +75,7 @@ function SectionName({ data, setData }) {
             onChange={(e) => setData({ ...data, range: (e.target.value).toUpperCase(), sectionName: `${data.section}-${data.township}-${(e.target.value).toUpperCase()}` })}
           />
           <FormErrorMessage>{rangeError}</FormErrorMessage>
-          <FormHelperText fontSize={10}>{rangeHelper}</FormHelperText>
+          <FormHelperText color="white" fontSize={10}>{rangeHelper}</FormHelperText>
         </FormControl>
       </Flex>
       <FormControl isRequired>

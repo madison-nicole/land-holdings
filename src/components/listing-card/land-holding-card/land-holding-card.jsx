@@ -78,12 +78,14 @@ function LandHoldingCard({
             <FormLabel>Name</FormLabel>
             <Input type="text" value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })} />
             <FormErrorMessage>{errorMsg}</FormErrorMessage>
-            <FormHelperText fontSize={12}>{nameHelper}</FormHelperText>
+            <FormHelperText color="white" fontSize={12}>{nameHelper}</FormHelperText>
           </FormControl>
           <HStack marginTop="15px">
             <FormControl isRequired>
               <FormLabel>Owner Name</FormLabel>
               <Select
+                bgColor="#06253f"
+                color="white"
                 placeholder="Select Owner"
                 onChange={(e) => setData({ ...data, ownerName: e.target.value })}
               >
@@ -102,8 +104,8 @@ function LandHoldingCard({
               <NumberInput min={0} type="number" value={data.mineralAcres} onChange={(e) => setData({ ...data, mineralAcres: Number(e) })}>
                 <NumberInputField />
                 <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
+                  <NumberIncrementStepper color="white" />
+                  <NumberDecrementStepper color="white" />
                 </NumberInputStepper>
               </NumberInput>
               <FormErrorMessage>{errorMsg}</FormErrorMessage>
@@ -113,8 +115,8 @@ function LandHoldingCard({
               <NumberInput max={100} min={0} value={data.royalty} onChange={(e) => setData({ ...data, royalty: Number(e) })}>
                 <NumberInputField />
                 <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
+                  <NumberIncrementStepper color="white" />
+                  <NumberDecrementStepper color="white" />
                 </NumberInputStepper>
               </NumberInput>
               <FormErrorMessage>{errorMsg}</FormErrorMessage>
